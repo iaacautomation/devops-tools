@@ -1,0 +1,86 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+
+    - name: get parent directory and set matrix
+      id: set-matrix
+      run: |
+        git diff --name-only HEAD^ HEAD > files.txt
+        tf_config=''
+
+        while IFS= read -r file
+        do
+          echo "file = $file"
+          parent_dir=$(dirname -- "$file")
+          echo "parent_dir = $parent_dir"
+          
+          if [[ -z $tf_config ]]; then
+            tf_config="{\"tf_config\":\"$parent_dir\"}"
+          else
+            tf_config="$tf_config, {\"tf_config\":\"$parent_dir\"}"
+          fi
+        done < files.txt
+
+        tf_config="{\"include\":[$tf_config]}"
+        echo "::set-output name=matrix::$tf_config"      
+    
+    - name: get list
+      run: cat dirs.txt
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 'lts/*'
+
+    - name: Set Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npx semantic-release
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_ACCOUNT }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        registry: registry.gitlab.com
+        username: ${{ secrets.GITLAB_ACCOUNT }}
+        password: ${{ secrets.GITLAB_TOKEN }} 
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        images: ${{ github.repository }}//${{ github.path }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: |
+          ${{ steps.meta.outputs.tags }}
+          registry.gitlab.com/${{ steps.meta.outputs.tags }}/
+        labels: ${{ steps.meta.outputs.labels }}
+        platforms: linux/amd64,linux/arm64
