@@ -20,7 +20,9 @@ jobs:
 
       - name: get parent directory and set matrix
         id: set-matrix
-        run: bash -x ${{ github.workspace }}/.github/check-dirs.sh
+        run: |
+          TF_CONFIG=$(bash ${{ github.workspace }}/.github/check-dirs.sh)
+          echo "::set-output name=matrix::$TF_CONFIG"
   
   release:
     name: Release

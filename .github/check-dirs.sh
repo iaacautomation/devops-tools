@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 git diff --name-only HEAD^ HEAD |grep -v \.github > files.txt
 tf_config=''
 
@@ -15,5 +15,5 @@ do
   fi
 done < files.txt
 
-tf_config="{\"include\":[$tf_config]}"
-echo "::set-output name=matrix::$tf_config"
+echo "{\"include\":[$tf_config]}"
+
