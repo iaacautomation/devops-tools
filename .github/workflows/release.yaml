@@ -4,36 +4,49 @@ on:
     branches:
       - main
 jobs:
+  get-changed-dirs:
+    name: Get Changed Dirs
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: get parent directory and set matrix
+        id: set-matrix
+        run: |
+          git diff --name-only HEAD^ HEAD |grep -v \.github > files.txt
+          tf_config=''
+
+          while IFS= read -r file
+          do
+            echo "file = $file"
+            parent_dir=$(dirname -- "$file")
+            echo "parent_dir = $parent_dir"
+            
+            if [[ -z $tf_config ]]; then
+              tf_config="{\"tf_config\":\"$parent_dir\"}"
+            else
+              tf_config="$tf_config, {\"tf_config\":\"$parent_dir\"}"
+            fi
+          done < files.txt
+
+          tf_config="{\"include\":[$tf_config]}"
+          echo "::set-output name=matrix::$tf_config"
+  
   release:
     name: Release
     runs-on: ubuntu-latest
+    needs: get-changed-dirs
+    strategy:
+      matrix: ${{fromJson(needs.job1.outputs.matrix)}}    
     defaults:
       run:
         shell: bash
     steps:
-
-    - name: get parent directory and set matrix
-      id: set-matrix
-      run: |
-        git diff --name-only HEAD^ HEAD > files.txt
-        tf_config=''
-
-        while IFS= read -r file
-        do
-          echo "file = $file"
-          parent_dir=$(dirname -- "$file")
-          echo "parent_dir = $parent_dir"
-          
-          if [[ -z $tf_config ]]; then
-            tf_config="{\"tf_config\":\"$parent_dir\"}"
-          else
-            tf_config="$tf_config, {\"tf_config\":\"$parent_dir\"}"
-          fi
-        done < files.txt
-
-        tf_config="{\"include\":[$tf_config]}"
-        echo "::set-output name=matrix::$tf_config"      
-    
     - name: get list
       run: cat dirs.txt
 
