@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+    defaults:
+      run:
+        shell: bash -x
     steps:
       - name: Checkout
         uses: actions/checkout@v2
