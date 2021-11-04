@@ -64,8 +64,8 @@ jobs:
         context: diagnose
         push: ${{ contains(github.ref,'tag') }}
         tags: |
-          iaacautomation/diagnose:${{steps.tag.outputs.tag}}
-          registry.gitlab.com/iaac-automation/devops-tools/diagnose:${{steps.tag.outputs.tag}}
+          ${{ secrets.DOCKERHUB_ACCOUNT }}/diagnose:${{steps.tag.outputs.tag}}
+          ${{ secrets.GITLAB_BASE_REGISTRY }}/diagnose:${{steps.tag.outputs.tag}}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm
