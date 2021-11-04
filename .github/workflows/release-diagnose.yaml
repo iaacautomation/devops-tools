@@ -44,7 +44,7 @@ jobs:
       id: meta-diagnose
       uses: docker/metadata-action@v3
       with:
-        images: iaacautomation/devops-tools/diagnose
+        images: ${{ github.repository }}/diagnose
 
     - name: Build and push Docker image for diagnostics
       uses: docker/build-push-action@v2

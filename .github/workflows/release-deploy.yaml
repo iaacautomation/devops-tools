@@ -44,7 +44,7 @@ jobs:
       id: meta-deploy
       uses: docker/metadata-action@v3
       with:
-        images: iaacautomation/deploy
+        images: ${{ github.repository }}/deploy
 
     - name: Build and push Docker image for deploy
       uses: docker/build-push-action@v2
