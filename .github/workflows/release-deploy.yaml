@@ -22,14 +22,14 @@ jobs:
       with:
         script: console.log(context)    
         
-    - name: Log in to the Container registry
+    - name: Log in to the Docker Container registry
       if: contains(github.ref,'tag')
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_ACCOUNT }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Log in to the Container registry
+    - name: Log in to the Gitlab Container registry
       if: contains(github.ref,'tag')
       uses: docker/login-action@v1
       with:
@@ -50,9 +50,7 @@ jobs:
       with:
         context: deploy
         push: false
-        tags: |
-          iaacautomation/deploy:test
-          registry.gitlab.com/iaacautomation/devops-tools/deploy:test
+        tags: deploy:test
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm-slim
@@ -67,7 +65,7 @@ jobs:
         push: ${{ contains(github.ref,'tag') }}
         tags: |
           iaacautomation/deploy:${{steps.tag.outputs.tag}}
-          registry.gitlab.com/iaacautomation/devops-tools/deploy:${{steps.tag.outputs.tag}}
+          registry.gitlab.com/iaac-automation/devops-tools/deploy:${{steps.tag.outputs.tag}}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm-slim

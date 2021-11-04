@@ -50,9 +50,7 @@ jobs:
       with:
         context: diagnose
         push: false
-        tags: |
-          iaacautomation/diagnose:test
-          registry.gitlab.com/iaacautomation/devops-tools/diagnose:test
+        tags: diagnose:test
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm
@@ -67,7 +65,7 @@ jobs:
         push: ${{ contains(github.ref,'tag') }}
         tags: |
           iaacautomation/diagnose:${{steps.tag.outputs.tag}}
-          registry.gitlab.com/iaacautomation/devops-tools/diagnose:${{steps.tag.outputs.tag}}
+          registry.gitlab.com/iaac-automation/devops-tools/diagnose:${{steps.tag.outputs.tag}}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm
