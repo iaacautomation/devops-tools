@@ -18,14 +18,14 @@ jobs:
         fetch-depth: 0
 
     - name: Log in to the Container registry
-      if: contains(github.ref,"tag")
+      if: contains(github.ref,'tag')
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_ACCOUNT }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Log in to the Container registry
-      if: contains(github.ref,"tag")
+      if: contains(github.ref,'tag')
       uses: docker/login-action@v1
       with:
         registry: registry.gitlab.com
@@ -45,7 +45,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: deploy
-        push: contains(github.ref,"tag")
+        push: contains(github.ref,'tag')
         tags: |
           ${{ steps.meta-deploy.outputs.tags }}
           registry.gitlab.com/${{ steps.meta-deploy.outputs.tags }}
@@ -63,7 +63,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: diagnose
-        push: contains(github.ref,"tag")
+        push: contains(github.ref,'tag')
         tags: |
           ${{ steps.meta-diagnose.outputs.tags }}
           registry.gitlab.com/${{ steps.meta-diagnose.outputs.tags }}
