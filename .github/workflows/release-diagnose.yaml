@@ -49,13 +49,13 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: diagnose
-        push: ${{ contains(github.ref,'tag') }}
+        push: false
         tags: |
           iaacautomation/diagnose:test
           registry.gitlab.com/iaacautomation/devops-tools/diagnose:test
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
-        build-args: DISTRO=bookworm-slim
+        build-args: DISTRO=bookworm
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -70,5 +70,5 @@ jobs:
           registry.gitlab.com/iaacautomation/devops-tools/diagnose:${{steps.tag.outputs.tag}}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
-        build-args: DISTRO=bookworm-slim
+        build-args: DISTRO=bookworm
         cache-from: type=gha

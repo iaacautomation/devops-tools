@@ -49,7 +49,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: deploy
-        push: ${{ contains(github.ref,'tag') }}
+        push: false
         tags: |
           iaacautomation/deploy:test
           registry.gitlab.com/iaacautomation/devops-tools/deploy:test
