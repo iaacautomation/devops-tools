@@ -56,22 +56,4 @@ jobs:
           registry.gitlab.com/${{ steps.meta-deploy.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
-        build-args: DISTRO=bookworm
-
-    - name: Extract metadata (tags, labels) for Docker
-      id: meta-diagnose
-      uses: docker/metadata-action@v3
-      with:
-        images: iaacautomation/diagnose
-
-    - name: Build and push Docker image for diagnostics
-      uses: docker/build-push-action@v2
-      with:
-        context: diagnose
-        push: ${{ contains(github.ref,'tag') }}
-        tags: |
-          ${{ steps.meta-diagnose.outputs.tags }}
-          registry.gitlab.com/${{ steps.meta-diagnose.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        platforms: linux/amd64,linux/arm64
-        build-args: DISTRO=bookworm
+        build-args: DISTRO=bookworm-slim

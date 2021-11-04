@@ -1,5 +1,5 @@
 ARG DISTRO
-FROM --platform=$BUILDPLATFORM debian:${DISTRO}-slim
+FROM --platform=$BUILDPLATFORM debian:${DISTRO}
 WORKDIR /tmp
 ARG TARGETARCH
 ENV DEBIAN_FRONTEND=noninteractive
