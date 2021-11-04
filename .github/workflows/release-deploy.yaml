@@ -1,4 +1,4 @@
-name: Release
+name: Build and Release Deploy Image
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs: 
   release:
-    name: Release
+    name: Build and Release Deploy Image
     runs-on: ubuntu-latest
     defaults:
       run:

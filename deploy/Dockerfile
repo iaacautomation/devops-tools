@@ -20,6 +20,9 @@ RUN apt-get update && apt-get install -y kubectl helm && rm -rf /var/lib/apt/lis
 ARG TERRAFORM_VERSION=1.0.10
 RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/ && rm terraform* -rf
 
+### Install helmfile
+RUN curl https://github.com/roboll/helmfile/releases/download/v0.142.0/helmfile_linux_${TARGETARCH} -o /usr/local/bin/helmfile && chmod +x /usr/local/bin/helmfile
+
 ### Install tfenv
 RUN git clone https://github.com/tfutils/tfenv.git && cd /tmp/tfenv && git checkout v2.2.2 && rm -rf .git .github .gitignore .travis.yml *.md test && cd /tmp/ && mv tfenv /usr/local/
 ENV PATH=$PATH:/usr/local/tfenv/bin

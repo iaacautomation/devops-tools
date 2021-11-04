@@ -1,4 +1,4 @@
-name: Release
+name:  Build and Release Diagnose Image
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs: 
   release:
-    name: Release
+    name:  Build and Release Diagnose Image
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -44,7 +44,7 @@ jobs:
       id: meta-diagnose
       uses: docker/metadata-action@v3
       with:
-        images: iaacautomation/diagnose
+        images: iaacautomation/devops-tools/diagnose
 
     - name: Build and push Docker image for diagnostics
       uses: docker/build-push-action@v2
