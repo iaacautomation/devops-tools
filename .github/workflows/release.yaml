@@ -44,7 +44,7 @@ jobs:
       uses: docker/setup-buildx-action@v1
 
     - name: Extract metadata (tags, labels) for Docker
-      id: meta
+      id: meta-deploy
       uses: docker/metadata-action@v3
       with:
         images: ${{ github.repository }}//deploy
@@ -55,14 +55,14 @@ jobs:
         context: deploy
         push: true
         tags: |
-          ${{ steps.meta.outputs.tags }}
-          registry.gitlab.com/${{ steps.meta.outputs.tags }}/
+          ${{ steps.meta-deploy.outputs.tags }}
+          registry.gitlab.com/${{ steps.meta-deploy.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm
 
     - name: Extract metadata (tags, labels) for Docker
-      id: meta
+      id: meta-diagnose
       uses: docker/metadata-action@v3
       with:
         images: ${{ github.repository }}//diagnose
@@ -73,8 +73,8 @@ jobs:
         context: diagnose
         push: true
         tags: |
-          ${{ steps.meta.outputs.tags }}
-          registry.gitlab.com/${{ steps.meta.outputs.tags }}/
+          ${{ steps.meta-diagnose.outputs.tags }}
+          registry.gitlab.com/${{ steps.meta-diagnose.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm
