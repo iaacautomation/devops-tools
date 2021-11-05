@@ -54,6 +54,8 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
     - name: Build and push Docker image for diagnose
       if: contains(github.ref,'tag')
@@ -69,3 +71,5 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
