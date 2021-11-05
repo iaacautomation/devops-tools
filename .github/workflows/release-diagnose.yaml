@@ -18,7 +18,6 @@ jobs:
         fetch-depth: 0
     
     - name: Log in to the Docker Container registry
-      if: contains(github.ref,'tag')
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_ACCOUNT }}
