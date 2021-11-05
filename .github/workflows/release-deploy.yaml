@@ -39,8 +39,6 @@ jobs:
       if: contains(github.ref,'tag')
       id: tag
       uses: dawidd6/action-get-tag@v1
-      with:
-        strip: 'v'
 
     - name: Test Build for deploy
       uses: docker/build-push-action@v2
