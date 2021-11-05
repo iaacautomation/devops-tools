@@ -18,7 +18,7 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
 
 ### Install helmfile
-RUN curl https://github.com/roboll/helmfile/releases/download/v0.142.0/helmfile_linux_${TARGETARCH} -o /usr/local/bin/helmfile && chmod +x /usr/local/bin/helmfile
+RUN wget -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.142.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile
 
 ### Install All requirements
 RUN apt-get update && apt-get install -y kubectl helm && rm -rf /var/lib/apt/lists
