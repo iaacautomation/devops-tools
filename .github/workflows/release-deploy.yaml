@@ -63,8 +63,8 @@ jobs:
         tags: |
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
-          ${{ secrets.GITLAB_BASE_REGISTRY }}/${{ secrets.GITLAB_ACCOUNT }}/devops-tools/deploy:${{steps.tag.outputs.tag}}
-          ${{ secrets.GITLAB_BASE_REGISTRY }}/${{ secrets.GITLAB_ACCOUNT }}/devops-tools/deploy:latest
+          ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
+          ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm-slim

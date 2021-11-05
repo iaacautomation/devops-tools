@@ -61,8 +61,8 @@ jobs:
         tags: |
           ${{ secrets.DOCKERHUB_ACCOUNT }}/diagnose:${{steps.tag.outputs.tag}}
           ${{ secrets.DOCKERHUB_ACCOUNT }}/diagnose:latest
-          ${{ secrets.GITLAB_BASE_REGISTRY }}/${{ secrets.GITLAB_ACCOUNT }}/devops-tools/diagnose:${{steps.tag.outputs.tag}}
-          ${{ secrets.GITLAB_BASE_REGISTRY }}/${{ secrets.GITLAB_ACCOUNT }}/devops-tools/diagnose:latest
+          ${{ secrets.GITLAB_REGISTRY_PATH }}/diagnose:${{steps.tag.outputs.tag}}
+          ${{ secrets.GITLAB_REGISTRY_PATH }}/diagnose:latest
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm
