@@ -61,10 +61,10 @@ jobs:
         context: deploy
         push: ${{ contains(github.ref,'tag') }}
         tags: |
-          iaacautomation/deploy:${{steps.tag.outputs.tag}}
-          iaacautomation/deploy:latest
-          registry.gitlab.com/iaac-automation/devops-tools/deploy:${{steps.tag.outputs.tag}}
-          registry.gitlab.com/iaac-automation/devops-tools/deploy:latest
+          ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
+          ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
+          ${{ secrets.GITLAB_BASE_REGISTRY }}/${{ secrets.GITLAB_ACCOUNT }}/devops-tools/deploy:${{steps.tag.outputs.tag}}
+          ${{ secrets.GITLAB_BASE_REGISTRY }}/${{ secrets.GITLAB_ACCOUNT }}/devops-tools/deploy:latest
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm-slim
