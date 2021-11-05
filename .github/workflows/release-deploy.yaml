@@ -18,7 +18,7 @@ jobs:
         fetch-depth: 0
     
     - name: Log in to the Github Container registry
-      if: ! contains(github.ref,'tag')
+      if: contains(github.ref,'branch')
       uses: docker/login-action@v1
       with:
         registry: ghcr.io
