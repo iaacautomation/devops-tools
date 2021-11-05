@@ -40,6 +40,9 @@ jobs:
       id: tag
       uses: dawidd6/action-get-tag@v1
 
+    - name: query buildx
+      run: docker buildx ls
+      
     - name: Test Build for deploy
       uses: docker/build-push-action@v2
       with:
