@@ -1,13 +1,16 @@
 ARG DISTRO
-FROM --platform=$BUILDPLATFORM debian:${DISTRO} as base
+FROM --platform=$BUILDPLATFORM golang:alpine
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+FROM debian:${DISTRO} as base
+ARG TARGETARCH 
 WORKDIR /tmp
 COPY awscli.sh /tmp/
-ARG TARGETARCH
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update &&  apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https apt-utils
 
-FROM base as kubernetes
 ## Setup Kubectl repo
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
 
@@ -20,7 +23,6 @@ RUN curl https://github.com/roboll/helmfile/releases/download/v0.142.0/helmfile_
 ### Install All requirements
 RUN apt-get update && apt-get install -y kubectl helm && rm -rf /var/lib/apt/lists
 
-FROM base as terraform
 ### Install Terraform
 ARG TERRAFORM_VERSION=1.0.10
 RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/ && rm terraform* -rf
