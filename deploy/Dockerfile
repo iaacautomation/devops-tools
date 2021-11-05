@@ -1,5 +1,5 @@
 ARG DISTRO
-FROM --platform=$BUILDPLATFORM debian:${DISTRO}
+FROM --platform=$BUILDPLATFORM debian:${DISTRO} as base
 WORKDIR /tmp
 COPY awscli.sh /tmp/
 ARG TARGETARCH
