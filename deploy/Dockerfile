@@ -39,7 +39,7 @@ WORKDIR /workdir
 RUN apt-get update && apt-get install -y kubectl helm && rm -rf /var/lib/apt/lists
 
 ### Install helmfile
-RUN wget -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.142.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile
+RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.142.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile
 
 ### Install Terraform
 ARG TERRAFORM_VERSION=1.0.10
