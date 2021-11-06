@@ -15,7 +15,6 @@ RUN make install
 
 FROM debian:${DISTRO}
 ARG TARGETARCH 
-COPY awscli.sh /tmp/
 ENV DEBIAN_FRONTEND=noninteractive 
 
 RUN apt-get update && apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https
@@ -40,7 +39,8 @@ ARG TERRAFORM_VERSION=1.0.10
 RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/
 
 # Install AWS CLI
-RUN bash awscli.sh $TARGETARCH && rm /tmp/* -rf
+COPY awscli.sh /tmp/
+RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf
 
 ### Add User 
 RUN groupadd -g 10001 deploy && useradd -g 10001 -u 10001 -s /bin/bash -m deploy
