@@ -3,11 +3,9 @@ FROM --platform=$BUILDPLATFORM golang:alpine
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 ARG TARGETARCH 
-WORKDIR /tmp
 
 FROM debian:$DISTRO as build
 ENV DEBIAN_FRONTEND=noninteractive 
-WORKDIR /tmp/
 RUN apt-get update 
 RUN apt-get -y dist-upgrade 
 RUN apt-get install -y golint apt-transport-https golang curl gnupg git build-essential
@@ -34,6 +32,7 @@ RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb http
 COPY --from=build /plugins/ /plugins/
 
 FROM base
+ARG TARGETARCH 
 ENV DEBIAN_FRONTEND=noninteractive 
 WORKDIR /workdir
 ### Install All requirements
