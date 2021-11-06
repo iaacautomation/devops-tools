@@ -24,7 +24,7 @@ COPY awscli.sh /workdir/
 
 ENV DEBIAN_FRONTEND=noninteractive 
 
-RUN apt-get update apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https
+RUN apt-get update && apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https
 
 ## Setup Kubectl repo
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
