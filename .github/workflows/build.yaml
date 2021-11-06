@@ -2,7 +2,7 @@ name: Build and Release build Image
 on:
   push:
     paths:
-    - "build/*"
+    - "build-base/*"
 
 jobs: 
   release:
