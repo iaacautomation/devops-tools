@@ -14,6 +14,7 @@ WORKDIR /helm-diff
 RUN make install
 
 FROM debian:${DISTRO} as base
+ARG TARGETARCH 
 RUN mkdir /workdir
 COPY awscli.sh /workdir/
 
@@ -26,10 +27,6 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 
 ## Setup Helm
 RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
-
-FROM base
-ARG TARGETARCH 
-ENV DEBIAN_FRONTEND=noninteractive 
 
 WORKDIR /usr/local/
 ### Install tfenv
@@ -51,6 +48,7 @@ RUN bash -x awscli.sh $TARGETARCH && rm /workdir/* -rf
 
 ENV PATH=$PATH:/usr/local/tfenv/bin
 
+FROM tools
 ### Add User 
 RUN groupadd -g 10001 deploy && useradd -g 10001 -u 10001 -s /bin/bash -m deploy
 USER deploy
