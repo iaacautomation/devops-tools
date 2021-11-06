@@ -48,7 +48,7 @@ RUN bash -x awscli.sh $TARGETARCH && rm /workdir/* -rf
 
 ENV PATH=$PATH:/usr/local/tfenv/bin
 
-FROM tools
+FROM base
 ### Add User 
 RUN groupadd -g 10001 deploy && useradd -g 10001 -u 10001 -s /bin/bash -m deploy
 USER deploy
