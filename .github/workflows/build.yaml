@@ -6,7 +6,7 @@ on:
 
 jobs: 
   release:
-    name: Build and Release Deploy Image
+    name: Build and Release Build Image
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,7 +35,7 @@ jobs:
     - name: Build for build
       uses: docker/build-push-action@v2
       with:
-        context: deploy
+        context: build-base
         push: true
         tags: ghcr.io/iaacautomation/devops-tools/build:latest
         labels: ${{ steps.meta.outputs.labels }}
