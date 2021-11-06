@@ -44,14 +44,13 @@ ARG TERRAFORM_VERSION=1.0.10
 RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/
 
 # Install AWS CLI
-RUN bash -x awscli.sh $TARGETARCH && rm /workdir/* -rf
+RUN bash awscli.sh $TARGETARCH && rm /workdir/* -rf
 
-ENV PATH=$PATH:/usr/local/tfenv/bin
-
-FROM base
 ### Add User 
 RUN groupadd -g 10001 deploy && useradd -g 10001 -u 10001 -s /bin/bash -m deploy
+COPY --from=build /plugins/ /home/deploy/.local/share/helm/plugins/ 
+RUN chown deploy:deploy /home/deploy -R
+ENV PATH=$PATH:/usr/local/tfenv/bin
 USER deploy
-COPY --from=build /plugins/ /home/deploy/.local/share/helm/plugins/
 WORKDIR /home/deploy/
 CMD ["/bin/bash"]
