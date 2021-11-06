@@ -14,8 +14,8 @@ RUN apt-get install -y golint apt-transport-https golang curl gnupg git build-es
 RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
 RUN apt-get update
 RUN apt-get install -y helm
-RUN git clone https://github.com/databus23/helm-diff
-RUN cd ${WORKDIR}/helm-diff
+RUN git clone https://github.com/databus23/helm-diff /helm-diff
+WORKDIR /helm-diff
 RUN make install
 
 FROM debian:${DISTRO} as base

@@ -1,7 +1,8 @@
 name: Build and Release Deploy Image
 on:
   push:
-    branches:
+    paths:
+    - "deploy/*"
     tags:
 
 jobs: 

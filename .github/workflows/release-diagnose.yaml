@@ -1,7 +1,8 @@
 name:  Build and Release Diagnose Image
 on:
   push:
-    branches:
+    paths:
+    - "diagnose/*"
     tags:
 
 jobs: 
