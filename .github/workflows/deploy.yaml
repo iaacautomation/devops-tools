@@ -76,6 +76,8 @@ jobs:
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
           ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
           ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
+          ghcr.io/iaacautomation/devops-tools/deploy:${{steps.tag.outputs.tag}}
+          ghcr.io/iaacautomation/devops-tools/deploy:latest
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm-slim
