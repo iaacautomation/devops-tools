@@ -34,6 +34,11 @@ COPY --from=build /plugins/ /plugins/
 FROM base
 ARG TARGETARCH 
 ENV DEBIAN_FRONTEND=noninteractive 
+
+WORKDIR /usr/local/
+### Install tfenv
+RUN git clone https://github.com/tfutils/tfenv.git  /usr/local/tfenv && cd tfenv && git checkout v2.2.2 && rm -rf .git .github .gitignore .travis.yml *.md test
+
 WORKDIR /workdir
 ### Install All requirements
 RUN apt-get update && apt-get install -y kubectl helm && rm -rf /var/lib/apt/lists
@@ -43,14 +48,12 @@ RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releas
 
 ### Install Terraform
 ARG TERRAFORM_VERSION=1.0.10
-RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/ && rm terraform* -rf
-
-
-### Install tfenv
-RUN git clone https://github.com/tfutils/tfenv.git && cd /workdir/tfenv && git checkout v2.2.2 && rm -rf .git .github .gitignore .travis.yml *.md test && cd /workdir && mv tfenv /usr/local/
-ENV PATH=$PATH:/usr/local/tfenv/bin
+RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/
 
 # Install AWS CLI
-RUN bash -x awscli.sh $TARGETARCH && rm /workdir -rf
+RUN bash -x awscli.sh $TARGETARCH && rm /workdir/* -rf
 
+ENV PATH=$PATH:/usr/local/tfenv/bin
+
+WORKDIR /root/
 CMD ["/bin/bash"]
