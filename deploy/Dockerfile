@@ -4,11 +4,8 @@ ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 ARG TARGETARCH 
 
-FROM debian:$DISTRO as build
+FROM ghcr.io/iaacautomation/devops-tools/build as build
 ENV DEBIAN_FRONTEND=noninteractive 
-RUN apt-get update 
-RUN apt-get -y dist-upgrade 
-RUN apt-get install -y golint apt-transport-https golang curl gnupg git build-essential
 RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
 RUN apt-get update
 RUN apt-get install -y helm
@@ -29,7 +26,6 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 
 ## Setup Helm
 RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
-COPY --from=build /plugins/ /plugins/
 
 FROM base
 ARG TARGETARCH 
@@ -55,5 +51,9 @@ RUN bash -x awscli.sh $TARGETARCH && rm /workdir/* -rf
 
 ENV PATH=$PATH:/usr/local/tfenv/bin
 
-WORKDIR /root/
+RUN useradd -s /bin/bash -m /home/deploy deploy
+COPY --from=build /plugins/ /root/.local/share/helm/plugins/
+RUN chown deploy:deploy /home/deploy -R
+USER deploy
+WORKDIR /home/deploy/
 CMD ["/bin/bash"]
