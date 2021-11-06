@@ -13,11 +13,9 @@ RUN git clone https://github.com/databus23/helm-diff /helm-diff
 WORKDIR /helm-diff
 RUN make install
 
-FROM debian:${DISTRO} as base
+FROM debian:${DISTRO}
 ARG TARGETARCH 
-RUN mkdir /workdir
-COPY awscli.sh /workdir/
-
+COPY awscli.sh /tmp/
 ENV DEBIAN_FRONTEND=noninteractive 
 
 RUN apt-get update && apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https
@@ -28,11 +26,9 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 ## Setup Helm
 RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
 
-WORKDIR /usr/local/
 ### Install tfenv
-RUN git clone https://github.com/tfutils/tfenv.git  /usr/local/tfenv && cd tfenv && git checkout v2.2.2 && rm -rf .git .github .gitignore .travis.yml *.md test
+RUN git clone https://github.com/tfutils/tfenv.git  /usr/local/tfenv && cd /usr/local/tfenv && git checkout v2.2.2 && rm -rf .git .github .gitignore .travis.yml *.md test
 
-WORKDIR /workdir
 ### Install All requirements
 RUN apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
@@ -44,7 +40,7 @@ ARG TERRAFORM_VERSION=1.0.10
 RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/
 
 # Install AWS CLI
-RUN bash awscli.sh $TARGETARCH && rm /workdir/* -rf
+RUN bash awscli.sh $TARGETARCH && rm /tmp/* -rf
 
 ### Add User 
 RUN groupadd -g 10001 deploy && useradd -g 10001 -u 10001 -s /bin/bash -m deploy
