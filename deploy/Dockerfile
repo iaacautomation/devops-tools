@@ -52,8 +52,7 @@ RUN bash -x awscli.sh $TARGETARCH && rm /workdir/* -rf
 ENV PATH=$PATH:/usr/local/tfenv/bin
 
 ### Add User 
-RUN groupadd -g 10001 deploy && useradd -g 10001 -u 10001 -s /bin/bash -m /home/deploy deploy
-RUN chown deploy:deploy /home/deploy -R
+RUN groupadd -g 10001 deploy && useradd -g 10001 -u 10001 -s /bin/bash -m deploy
 USER deploy
 COPY --from=build /plugins/ /home/deploy/.local/share/helm/plugins/
 WORKDIR /home/deploy/
