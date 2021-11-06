@@ -37,7 +37,7 @@ RUN git clone https://github.com/tfutils/tfenv.git  /usr/local/tfenv && cd tfenv
 
 WORKDIR /workdir
 ### Install All requirements
-RUN apt-get update && apt-get install -y kubectl helm && rm -rf /var/lib/apt/lists
+RUN apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ### Install helmfile
 RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.142.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile
@@ -51,9 +51,10 @@ RUN bash -x awscli.sh $TARGETARCH && rm /workdir/* -rf
 
 ENV PATH=$PATH:/usr/local/tfenv/bin
 
-RUN useradd -s /bin/bash -m /home/deploy deploy
-COPY --from=build /plugins/ /root/.local/share/helm/plugins/
+### Add User 
+RUN groupadd -g 10001 deploy && useradd -g 10001 -u 10001 -s /bin/bash -m /home/deploy deploy
 RUN chown deploy:deploy /home/deploy -R
 USER deploy
+COPY --from=build /plugins/ /home/deploy/.local/share/helm/plugins/
 WORKDIR /home/deploy/
 CMD ["/bin/bash"]
