@@ -47,7 +47,7 @@ RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform
 
 
 ### Install tfenv
-RUN git clone https://github.com/tfutils/tfenv.git && cd /tmp/tfenv && git checkout v2.2.2 && rm -rf .git .github .gitignore .travis.yml *.md test && cd /tmp/ && mv tfenv /usr/local/
+RUN git clone https://github.com/tfutils/tfenv.git && cd /workdir/tfenv && git checkout v2.2.2 && rm -rf .git .github .gitignore .travis.yml *.md test && cd /workdir && mv tfenv /usr/local/
 ENV PATH=$PATH:/usr/local/tfenv/bin
 
 # Install AWS CLI
