@@ -6,4 +6,4 @@ ARG TARGETARCH
 
 FROM debian:$DISTRO as build
 ENV DEBIAN_FRONTEND=noninteractive 
-RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y golint apt-transport-https golang curl gnupg git build-essential python3-pip
+RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y golint apt-transport-https golang curl gnupg git build-essential python3-pip golang
