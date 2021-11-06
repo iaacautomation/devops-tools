@@ -11,7 +11,7 @@ RUN apt-get update
 RUN apt-get install -y helm
 RUN git clone https://github.com/databus23/helm-diff /helm-diff
 WORKDIR /helm-diff
-RUN make install
+RUN git checkout v3.1.3 && make install
 
 FROM debian:${DISTRO}
 ARG TARGETARCH 
