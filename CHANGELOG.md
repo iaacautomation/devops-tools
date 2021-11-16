@@ -1,3 +1,7 @@
+## v0.7.0
+
+1. Terraform v1.0.11
+
 ## v0.6.0
 
 1. Terraform v1.0.10
