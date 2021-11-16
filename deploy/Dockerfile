@@ -14,8 +14,13 @@ WORKDIR /helm-diff
 RUN git checkout v3.1.3 && make install
 
 FROM debian:${DISTRO}
-ARG TARGETARCH 
-ARG TERRAFORM_VERSION=1.0.10
+LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
+LABEL org.opencontainers.image.source="https://github.com/iaacautomation/devops-tools/tree/main/deploy"
+LABEL org.opencontainers.image.title="CI/CD base"
+LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/devops-tools"
+LABEL org.opencontainers.image.description="Deployment Image for CI PIpelines"
+LABEL org.opencontainers.image.base.name="debian:bookworm-slim"
+ARG TARGETARCH TERRAFORM_VERSION=1.0.11
 COPY awscli.sh /tmp/
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https && rm -rf /var/lib/apt/lists/* -rf
