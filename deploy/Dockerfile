@@ -38,9 +38,6 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ### Add User 
-COPY --from=build /plugins/ /home/deploy/.local/share/helm/plugins/ 
-RUN chown deploy:deploy /home/deploy -R
-USER deploy
+COPY --from=build /plugins/ /root/.local/share/helm/plugins/ 
 ENV PATH=$PATH:/usr/local/tfenv/bin
-WORKDIR /home/deploy/
 CMD ["/bin/bash"]
