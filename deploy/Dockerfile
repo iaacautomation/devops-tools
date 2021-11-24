@@ -12,9 +12,9 @@ RUN apt-get install -y helm
 RUN git clone https://github.com/databus23/helm-diff /helm-diff
 WORKDIR /helm-diff
 RUN git checkout v3.1.3 && make install
+ENV PATH="/opt/ansible/bin:$PATH"
 RUN python3 -m venv /opt/ansible
-ENV PATH="/opt/venv/bin:$PATH"
-RUN pip install ansible
+RUN pip3 install ansible six
 
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
@@ -55,5 +55,5 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl 
 ### Add User 
 COPY --from=build /plugins/ /root/.local/share/helm/plugins/ 
 COPY --from=build /opt/ansible /opt/ansible
-ENV PATH=$PATH:/usr/local/tfenv/bin:/opt/ansible/bin
+ENV PATH=/opt/ansible/bin:$PATH:/usr/local/tfenv/bin
 CMD ["/bin/bash"]
