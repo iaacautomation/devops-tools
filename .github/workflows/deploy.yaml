@@ -54,6 +54,7 @@ jobs:
       uses: dawidd6/action-get-tag@v1
 
     - name: Test Build for deploy
+      if: contains(github.ref,'branch')
       uses: docker/build-push-action@v2
       with:
         context: deploy
@@ -67,18 +68,13 @@ jobs:
 
     - name: Build and push Docker image for deploy
       if: contains(github.ref,'tag')
-      uses: docker/build-push-action@v2
-      with:
-        context: deploy
-        push: ${{ contains(github.ref,'tag') }}
-        tags: |
-          ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
-          ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
-          ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
-          ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
-        labels: ${{ steps.meta.outputs.labels }}
-        platforms: linux/amd64,linux/arm64
-        build-args: DISTRO=bookworm-slim
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-            
+      run: |
+        docker pull ghcr.io/iaacautomation/devops-tools/deploy:test
+        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
+        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
+        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
+        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
+        docker push ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
+        docker push ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
+        docker push ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
+        docker push ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
