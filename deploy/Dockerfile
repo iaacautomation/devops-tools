@@ -12,6 +12,9 @@ RUN apt-get install -y helm
 RUN git clone https://github.com/databus23/helm-diff /helm-diff
 WORKDIR /helm-diff
 RUN git checkout v3.1.3 && make install
+RUN python3 -m venv /opt/ansible
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install ansible
 
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
@@ -26,7 +29,7 @@ ARG TARGETARCH TERRAFORM_VERSION=1.0.11
 COPY awscli.sh /tmp/
 
 ### Install utilities and packages
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https ansible && rm -rf /var/lib/apt/lists/* -rf
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https  && rm -rf /var/lib/apt/lists/* -rf
 
 ## Setup Kubernetes key and repo for kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list 
@@ -51,5 +54,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl 
 
 ### Add User 
 COPY --from=build /plugins/ /root/.local/share/helm/plugins/ 
-ENV PATH=$PATH:/usr/local/tfenv/bin
+COPY --from=build /opt/ansible /opt/ansible
+ENV PATH=$PATH:/usr/local/tfenv/bin:/opt/ansible/bin
 CMD ["/bin/bash"]
