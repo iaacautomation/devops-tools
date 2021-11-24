@@ -32,7 +32,7 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
  
-   - name: download docker image
+    - name: download docker image
       run: docker pull ghcr.io/iaacautomation/devops-tools/build:latest
       continue-on-error: true
  
