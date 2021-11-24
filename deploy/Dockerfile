@@ -14,7 +14,7 @@ WORKDIR /helm-diff
 RUN git checkout v3.1.3 && make install
 ENV PATH="/opt/ansible/bin:$PATH"
 RUN python3 -m venv /opt/ansible
-RUN pip3 install ansible six
+RUN pip3 install ansible six jmespath distlib
 
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
