@@ -44,6 +44,10 @@ jobs:
       if: contains(github.ref,'tag')
       id: tag
       uses: dawidd6/action-get-tag@v1
+
+    - name: download docker image
+      run: docker pull ghcr.io/iaacautomation/devops-tools/diagnose:test
+      continue-on-error: true 
     
     - name: Test Build for diagnose
       uses: docker/build-push-action@v2
