@@ -52,6 +52,7 @@ RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf
 ## Install kubectl and helm
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
+
 ### Add User 
 COPY --from=build /plugins/ /root/.local/share/helm/plugins/ 
 COPY --from=build /opt/ansible /opt/ansible
