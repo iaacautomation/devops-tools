@@ -23,7 +23,7 @@ LABEL org.opencontainers.image.title="CI/CD base"
 LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description="Deployment Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name="debian:bookworm-slim"
-ARG TARGETARCH TERRAFORM_VERSION=1.0.11
+ARG TARGETARCH TERRAFORM_VERSION=1.1.0
 
 ### Copy awscli install script
 COPY awscli.sh /tmp/
