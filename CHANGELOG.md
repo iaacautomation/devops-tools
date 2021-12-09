@@ -1,10 +1,13 @@
 ## v0.11.0
 
 1. terraform 1.1.0
+1. ansible 5.0.1
+1. ansible-core 2.12.1
 
 ## v0.10.0
 
 1. ansible 4.8.0
+1. ansible-core 2.11.6
 
 ## v0.7.0
 
