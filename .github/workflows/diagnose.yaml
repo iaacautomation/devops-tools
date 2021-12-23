@@ -6,15 +6,6 @@ on:
 
 jobs: 
   release:
-name: Build and Release Deploy Image
-on:
-  push:
-    paths:
-    - "deploy/*"
-    tags:
-
-jobs: 
-  release:
     name: Build and Release Deploy Image
     runs-on: ubuntu-latest
     defaults:
@@ -32,13 +23,6 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ github.token }}
-
-    - name: Log in to the Docker Container registry
-      if: contains(github.ref,'tag')
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_ACCOUNT }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Log in to the Gitlab Container registry
       if: contains(github.ref,'tag')
@@ -61,22 +45,11 @@ jobs:
       with:
         context: diagnose
         push: true
-        tags: ghcr.io/iaacautomation/devops-tools/diagnose:test
+        tags: |
+          ghcr.io/iaacautomation/devops-tools/diagnose:latest
+          ${{ secrets.GITLAB_REGISTRY_PATH }}/diagnose:latest
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm
         cache-from: type=gha
         cache-to: type=gha,mode=max
-
-    - name: Build and push Docker image for diagnose
-      if: contains(github.ref,'tag')
-      run: |
-        docker pull ghcr.io/iaacautomation/devops-tools/diagnose:test
-        docker tag ghcr.io/iaacautomation/devops-tools/diagnose:test ${{ secrets.DOCKERHUB_ACCOUNT }}/diagnose:${{steps.tag.outputs.tag}}
-        docker tag ghcr.io/iaacautomation/devops-tools/diagnose:test ${{ secrets.DOCKERHUB_ACCOUNT }}/diagnose:latest
-        docker tag ghcr.io/iaacautomation/devops-tools/diagnose:test ${{ secrets.GITLAB_REGISTRY_PATH }}/diagnose:${{steps.tag.outputs.tag}}
-        docker tag ghcr.io/iaacautomation/devops-tools/diagnose:test ${{ secrets.GITLAB_REGISTRY_PATH }}/diagnose:latest
-        docker push ${{ secrets.DOCKERHUB_ACCOUNT }}/diagnose:${{steps.tag.outputs.tag}}
-        docker push ${{ secrets.DOCKERHUB_ACCOUNT }}/diagnose:latest
-        docker push ${{ secrets.GITLAB_REGISTRY_PATH }}/diagnose:${{steps.tag.outputs.tag}}
-        docker push ${{ secrets.GITLAB_REGISTRY_PATH }}/diagnose:latest 
