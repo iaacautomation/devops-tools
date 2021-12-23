@@ -1,3 +1,9 @@
+## v0.13.0
+
+1. Terraform 1.1.2
+1. ansible 5.1.0
+1. ansible-lint 5.3.1
+
 ## v0.12.0
 
 1. Added ansible-lint
