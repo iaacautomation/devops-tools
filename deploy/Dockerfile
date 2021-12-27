@@ -56,7 +56,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl 
 RUN curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.0.2/clusterctl-linux-amd64 -o clusterctl && mv clusterctl /usr/local/bin/clusterctl && chmod +x /usr/local/bin/clusterctl
 
 ### Add User 
-COPY --from=build /plugins/ /root/.local/share/helm/plugins/ 
+COPY --from=build /plugins/ /usr/local/share/helm/plugins/ 
 COPY --from=build /opt/ansible /opt/ansible
 ENV PATH=/opt/ansible/bin:$PATH:/usr/local/tfenv/bin
+ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 CMD ["/bin/bash"]
