@@ -17,12 +17,12 @@ RUN python3 -m venv /opt/ansible
 RUN pip3 install ansible six jmespath distlib ansible-lint
 
 FROM debian:${DISTRO}
-LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
-LABEL org.opencontainers.image.source="https://github.com/iaacautomation/devops-tools/tree/main/deploy"
-LABEL org.opencontainers.image.title="CI/CD base"
-LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/devops-tools"
-LABEL org.opencontainers.image.description="Deployment Image for CI PIpelines"
-LABEL org.opencontainers.image.base.name="debian:bookworm-slim"
+LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
+LABEL org.opencontainers.image.source "https://github.com/iaacautomation/devops-tools/tree/main/deploy"
+LABEL org.opencontainers.image.title "CI/CD base"
+LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
+LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
+LABEL org.opencontainers.image.base.name "debian:bookworm-slim"
 ARG TARGETARCH TERRAFORM_VERSION=1.1.2
 
 ### Copy awscli install script
@@ -44,7 +44,7 @@ RUN git clone https://github.com/tfutils/tfenv.git  /usr/local/tfenv && cd /usr/
 RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.142.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile 
 
 ## Install terraform
-RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/ 
+RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/ && rm terraform.zip
 
 ## Install awscli
 RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf 
