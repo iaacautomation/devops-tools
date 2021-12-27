@@ -1,3 +1,7 @@
+## v0.14.0
+
+1. Clusterctl 1.0.2
+
 ## v0.13.0
 
 1. Terraform 1.1.2

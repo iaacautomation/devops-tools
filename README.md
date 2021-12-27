@@ -7,5 +7,7 @@ The image provides following tools for use with ci pipelines
 1. helmfile
 1. awscli
 1. ansible
+1. ansible-lint
+1. clusterctl
 
 Source: https://github.com/iaacautomation/devops-tools/tree/main/deploy
