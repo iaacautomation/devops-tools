@@ -67,17 +67,53 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
-    - name: Build and push Docker image for deploy
-      if: contains(github.ref,'tag')
+  push-dockerhub:
+    name: Push to dockerhub
+    needs: release
+    if: contains(github.ref,'tag')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Push Docker images to dockerhub
       run: |
         docker pull ghcr.io/iaacautomation/devops-tools/deploy:test
         docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
         docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
-        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ghcr.io/iaacautoamtion/devops-tools/deploy:${{steps.tag.outputs.tag}}
-        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ghcr.io/iaacautomation/devops-tools/${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
-        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
-        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
         docker push ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
         docker push ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
+
+  push-github:
+    name: Push to github
+    needs: release
+    if: contains(github.ref,'tag')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Push docker images to Github
+      run: |
+        docker pull ghcr.io/iaacautomation/devops-tools/deploy:test
+        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ghcr.io/iaacautoamtion/devops-tools/deploy:${{steps.tag.outputs.tag}}
+        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ghcr.io/iaacautomation/devops-tools/deploy:latest
+        docker push ghcr.io/iaacautomation/devops-tools/deploy:${{steps.tag.outputs.tag}}
+        docker push ghcr.io/iaacautomation/devops-tools//deploy:latest
+
+  push-gitlab:
+    name: Push to gitlab
+    needs: release
+    if: contains(github.ref,'tag')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Push docker images to Gitlab
+      run: |
+        docker pull ghcr.io/iaacautomation/devops-tools/deploy:test
+        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
+        docker tag ghcr.io/iaacautomation/devops-tools/deploy:test ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
         docker push ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
         docker push ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
