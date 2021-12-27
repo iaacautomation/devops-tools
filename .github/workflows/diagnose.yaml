@@ -25,7 +25,6 @@ jobs:
         password: ${{ github.token }}
 
     - name: Log in to the Gitlab Container registry
-      if: contains(github.ref,'tag')
       uses: docker/login-action@v1
       with:
         registry: registry.gitlab.com
