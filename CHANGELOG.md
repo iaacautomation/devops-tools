@@ -1,3 +1,9 @@
+## v0.16.0
+
+1. Docker-ce-cli
+1. ansible 5.2.0
+1. ansible-lint 5.3.2
+
 ## v0.15.0
 
 1. Terraform 1.1.3

@@ -31,6 +31,9 @@ COPY awscli.sh /tmp/
 ### Install utilities and packages
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https  && rm -rf /var/lib/apt/lists/* -rf
 
+### Install docker gpgp key
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
 ## Setup Kubernetes key and repo for kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list 
 
@@ -49,8 +52,8 @@ RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform
 ## Install awscli
 RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf 
 
-## Install kubectl and helm
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+## Install kubectl and helm and docker cli
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm docker-ce-cli && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ## Install Clusterctl
 RUN curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.0.2/clusterctl-linux-amd64 -o clusterctl && mv clusterctl /usr/local/bin/clusterctl && chmod +x /usr/local/bin/clusterctl
