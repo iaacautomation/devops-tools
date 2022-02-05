@@ -1,3 +1,7 @@
+## v0.17.0
+
+1. Terraform 1.1.5
+
 ## v0.16.0
 
 1. Docker-ce-cli

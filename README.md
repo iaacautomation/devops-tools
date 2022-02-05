@@ -9,6 +9,5 @@ The image provides following tools for use with ci pipelines
 1. ansible
 1. ansible-lint
 1. clusterctl
-1. dockercli
 
 Source: https://github.com/iaacautomation/devops-tools/tree/main/deploy
