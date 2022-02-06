@@ -62,27 +62,21 @@ jobs:
         tags: ghcr.io/iaacautomation/devops-tools/deploy:test
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
-        build-args: DISTRO=bookworm-slim
+        build-args: |
+          DISTRO=bookworm-slim
+          TERRAFORM_VERSION=1.1.5
         cache-from: type=gha
         cache-to: type=gha,mode=max
     
     - name: Build and Push image for deploy
       if: contains(github.ref,'tag')
-      uses: docker/build-push-action@v2
+      uses: akhilerm/tag-push-action@v2.0.0
       with:
-        context: deploy
-        push: true
-        tags: |
+        src: ghcr.io/iaacautomation/devops-tools/deploy:test
+        dst: |
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
           ghcr.io/iaacautomation/devops-tools/deploy:${{steps.tag.outputs.tag}}
           ghcr.io/iaacautomation/devops-tools/deploy:latest
           ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
           ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
-        labels: ${{ steps.meta.outputs.labels }}
-        platforms: linux/amd64,linux/arm64
-        build-args: |
-          DISTRO=bookworm-slim
-          TERRAFORM_VERSION=1.1.5
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
