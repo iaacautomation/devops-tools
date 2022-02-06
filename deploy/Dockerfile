@@ -1,17 +1,18 @@
 ARG DISTRO
+ARG TERRAFORM_VERSION
 FROM --platform=$BUILDPLATFORM golang:alpine
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 ARG TARGETARCH 
 
 FROM ghcr.io/iaacautomation/devops-tools/build as build
-ENV DEBIAN_FRONTEND=noninteractive 
+ENV DEBIAN_FRONTEND=noninteractive
 RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
-RUN apt-get update
-RUN apt-get install -y helm
-RUN git clone https://github.com/databus23/helm-diff /helm-diff
-WORKDIR /helm-diff
-RUN git checkout v3.1.3 && make install
+#RUN apt-get update
+#RUN apt-get install -y helm
+#RUN git clone https://github.com/databus23/helm-diff /helm-diff
+#WORKDIR /helm-diff
+#RUN git checkout v3.4.0 && make install
 ENV PATH="/opt/ansible/bin:$PATH"
 RUN python3 -m venv /opt/ansible
 RUN pip3 install ansible six jmespath distlib ansible-lint
@@ -23,7 +24,7 @@ LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:bookworm-slim"
-ARG TARGETARCH TERRAFORM_VERSION=1.1.5
+ARG TARGETARCH 
 
 ### Copy awscli install script
 COPY awscli.sh /tmp/
@@ -56,8 +57,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl 
 RUN curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.0.2/clusterctl-linux-amd64 -o clusterctl && mv clusterctl /usr/local/bin/clusterctl && chmod +x /usr/local/bin/clusterctl
 
 ### Add User 
-COPY --from=build /plugins/ /usr/local/share/helm/plugins/ 
+#COPY --from=build /plugins/ /usr/local/share/helm/plugins/ 
+
 COPY --from=build /opt/ansible /opt/ansible
 ENV PATH=/opt/ansible/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
+RUN helm plugin install https://github.com/databus23/helm-diff
 CMD ["/bin/bash"]
