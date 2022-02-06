@@ -7,11 +7,6 @@ ARG TARGETARCH
 FROM ghcr.io/iaacautomation/devops-tools/build as build
 ENV DEBIAN_FRONTEND=noninteractive
 RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
-#RUN apt-get update
-#RUN apt-get install -y helm
-#RUN git clone https://github.com/databus23/helm-diff /helm-diff
-#WORKDIR /helm-diff
-#RUN git checkout v3.4.0 && make install
 ENV PATH="/opt/ansible/bin:$PATH"
 RUN python3 -m venv /opt/ansible
 RUN pip3 install ansible six jmespath distlib ansible-lint
@@ -55,9 +50,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl 
 
 ## Install Clusterctl
 RUN curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.0.2/clusterctl-linux-amd64 -o clusterctl && mv clusterctl /usr/local/bin/clusterctl && chmod +x /usr/local/bin/clusterctl
-
-### Add User 
-#COPY --from=build /plugins/ /usr/local/share/helm/plugins/ 
 
 COPY --from=build /opt/ansible /opt/ansible
 ENV PATH=/opt/ansible/bin:$PATH:/usr/local/tfenv/bin
