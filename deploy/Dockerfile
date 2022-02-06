@@ -1,5 +1,4 @@
 ARG DISTRO
-ARG TERRAFORM_VERSION
 FROM --platform=$BUILDPLATFORM golang:alpine
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
@@ -24,7 +23,8 @@ LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:bookworm-slim"
-ARG TARGETARCH 
+ARG TARGETARCH
+ARG TERRAFORM_VERSION
 
 ### Copy awscli install script
 COPY awscli.sh /tmp/
