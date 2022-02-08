@@ -8,8 +8,9 @@
 1. helmfile v0.143.0
 1. awscli v2.4.16
 1. Ansible-core 2.12.2
-1. clusterctl 1.0.2
+1. ansible 5.3.0
 1. ansible-lint 5.3.2
+1. clusterctl 1.0.2
 
 ## v0.17.0
 
