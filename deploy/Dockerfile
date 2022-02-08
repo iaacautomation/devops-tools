@@ -39,9 +39,6 @@ RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releas
 ## Install Hashicorp key and repo
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && echo "deb [arch=amd64] https://apt.releases.hashicorp.com bullseye main" | tee /etc/apt/sources.list.d/hashicorp.list 
 
-## Install terraform
-RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/ && rm terraform.zip
-
 ## Install awscli
 RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf 
 
