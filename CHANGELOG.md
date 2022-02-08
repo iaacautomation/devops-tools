@@ -1,3 +1,16 @@
+## v1.0.0
+
+1. Terraform v1.1.5
+1. tfenv v2.2.2
+1. kubectl 1.22.3
+1. helm v3.8.0
+1. helm diff plugin v3.4.1
+1. helmfile v0.143.0
+1. awscli v2.4.16
+1. Ansible-core 2.12.2
+1. clusterctl 1.0.2
+1. ansible-lint 5.3.2
+
 ## v0.17.0
 
 1. Terraform 1.1.5
