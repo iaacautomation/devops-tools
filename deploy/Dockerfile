@@ -37,7 +37,7 @@ RUN git clone https://github.com/tfutils/tfenv.git  /usr/local/tfenv && cd /usr/
 RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.142.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile 
 
 ## Install Hashicorp key and repo
-RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - && echo "deb [arch=amd64] https://apt.releases.hashicorp.com bullseye main" | tee /etc/apt/sources.list.d/hashicorp.list 
+RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && echo "deb [arch=amd64] https://apt.releases.hashicorp.com bullseye main" | tee /etc/apt/sources.list.d/hashicorp.list 
 
 ## Install terraform
 RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/ && rm terraform.zip
