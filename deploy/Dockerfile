@@ -5,8 +5,6 @@ ARG BUILDPLATFORM
 ARG TARGETARCH 
 
 FROM ghcr.io/iaacautomation/devops-tools/build as build
-ENV DEBIAN_FRONTEND=noninteractive
-RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
 ENV PATH="/opt/ansible/bin:$PATH"
 RUN python3 -m venv /opt/ansible
 RUN pip3 install ansible six jmespath distlib ansible-lint
@@ -19,7 +17,6 @@ LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/
 LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:bookworm-slim"
 ARG TARGETARCH
-ARG TERRAFORM_VERSION
 
 ### Copy awscli install script
 COPY awscli.sh /tmp/
@@ -39,6 +36,9 @@ RUN git clone https://github.com/tfutils/tfenv.git  /usr/local/tfenv && cd /usr/
 ## Install helmfile
 RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.142.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile 
 
+## Install Hashicorp key and repo
+RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - && apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com bullseye main" 
+
 ## Install terraform
 RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o terraform.zip && unzip terraform.zip && chmod +x terraform && mv terraform /usr/local/bin/ && rm terraform.zip
 
@@ -46,7 +46,7 @@ RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform
 RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf 
 
 ## Install kubectl and helm and docker cli
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm terraform && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ## Install Clusterctl
 RUN curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.0.2/clusterctl-linux-amd64 -o clusterctl && mv clusterctl /usr/local/bin/clusterctl && chmod +x /usr/local/bin/clusterctl
