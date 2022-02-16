@@ -5,8 +5,8 @@ ARG BUILDPLATFORM
 ARG TARGETARCH 
 
 FROM ghcr.io/iaacautomation/devops-tools/build as build
-ENV PATH="/opt/ansible/bin:$PATH"
 RUN python3 -m venv /opt/ansible
+ENV PATH="/opt/ansible/bin:$PATH"
 RUN pip3 install ansible six jmespath distlib ansible-lint
 
 FROM debian:${DISTRO}
@@ -22,7 +22,8 @@ ARG TARGETARCH
 COPY awscli.sh /tmp/
 
 ### Install utilities and packages
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y dist-upgrade && apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https  && rm -rf /var/lib/apt/lists/* -rf
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y dist-upgrade 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https apt-utils && rm -rf /var/lib/apt/lists/* -rf
 
 ## Setup Kubernetes key and repo for kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list 
@@ -44,6 +45,9 @@ RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf
 
 ## Install kubectl and helm and docker cli
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm terraform && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+
+## Add gitlab terraform wrapper
+RUN curl -L https://gitlab.com/gitlab-org/terraform-images/-/blob/master/src/bin/gitlab-terraform.sh -o /usr/bin/gitlab-terraform && chmod +x /usr/bin/gitlab-terraform
 
 ## Install Clusterctl
 RUN curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.0.2/clusterctl-linux-amd64 -o clusterctl && mv clusterctl /usr/local/bin/clusterctl && chmod +x /usr/local/bin/clusterctl
