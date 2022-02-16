@@ -31,7 +31,7 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list 
 
 ## Install tfenv
-RUN git clone https://github.com/tfutils/tfenv.git  /usr/local/tfenv && cd /usr/local/tfenv && git checkout v2.2.2 && rm -rf .git .github .gitignore .travis.yml *.md test 
+RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/local/tfenv && git checkout v2.2.3 && rm -rf .git .github .gitignore .travis.yml *.md test 
 
 ## Install helmfile
 RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.143.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile 
@@ -44,9 +44,6 @@ RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf
 
 ## Install kubectl and helm and docker cli
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm terraform && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
-
-## Install Clusterctl
-RUN curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.0.2/clusterctl-linux-amd64 -o clusterctl && mv clusterctl /usr/local/bin/clusterctl && chmod +x /usr/local/bin/clusterctl
 
 COPY --from=build /opt/ansible /opt/ansible
 ENV PATH=/opt/ansible/bin:$PATH:/usr/local/tfenv/bin
