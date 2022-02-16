@@ -40,13 +40,10 @@ RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releas
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && echo "deb [arch=amd64] https://apt.releases.hashicorp.com bullseye main" | tee /etc/apt/sources.list.d/hashicorp.list 
 
 ## Install awscli
-RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf 
+RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf
 
 ## Install kubectl and helm and docker cli
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm terraform && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
-
-## Add gitlab terraform wrapper
-RUN curl -L https://gitlab.com/gitlab-org/terraform-images/-/blob/master/src/bin/gitlab-terraform.sh -o /usr/bin/gitlab-terraform && chmod +x /usr/bin/gitlab-terraform
 
 ## Install Clusterctl
 RUN curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.0.2/clusterctl-linux-amd64 -o clusterctl && mv clusterctl /usr/local/bin/clusterctl && chmod +x /usr/local/bin/clusterctl
