@@ -1,0 +1,5 @@
+general:
+  vulnerabilities:
+    - CVE-2020-25636
+  bestPracticeViolations:
+    - CIS-DI-0010
