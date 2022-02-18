@@ -3,6 +3,7 @@ on:
   push:
     paths:
     - "build-base/**"
+    workflow_dispatch:
 
 jobs: 
   release:
@@ -45,7 +46,6 @@ jobs:
         cache-to: type=gha,mode=max
 
     - name: Build and Push image for deploy
-      if: contains(github.ref,'tag')
       uses: akhilerm/tag-push-action@v2.0.0
       with:
         src: ghcr.io/iaacautomation/devops-tools/build:test
