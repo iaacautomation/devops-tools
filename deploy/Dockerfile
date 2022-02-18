@@ -7,7 +7,7 @@ ARG TARGETARCH
 FROM ghcr.io/iaacautomation/devops-tools/build as build
 RUN python3 -m venv /opt/ansible
 ENV PATH="/opt/ansible/bin:$PATH"
-RUN pip3 install ansible six jmespath distlib ansible-lint
+RUN pip3 install ansible six jmespath distlib ansible-lint && rm opt/ansible/lib/python3.9/site-packages/ansible_collections/community/general/tests/integration/targets/django_manage/files/base_test/1045-single-app-project/single_app_project/core/settings.py
 
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
@@ -22,7 +22,7 @@ ARG TARGETARCH
 COPY awscli.sh /tmp/
 
 ### Install utilities and packages
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y dist-upgrade &&  apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https apt-utils && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https apt-utils && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ## Setup Kubernetes key and repo for kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list 
