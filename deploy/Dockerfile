@@ -48,5 +48,5 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl 
 COPY --from=build /opt/ansible /opt/ansible
 ENV PATH=/opt/ansible/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
-RUN helm plugin install https://github.com/databus23/helm-diff
+RUN helm plugin install https://github.com/databus23/helm-diff && rm /root/ -rfv && mkdir /root
 CMD ["/bin/bash"]
