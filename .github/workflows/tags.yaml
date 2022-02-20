@@ -10,8 +10,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    needs:
-      - release
     steps:
     - name: Get tag
       id: tag
@@ -36,8 +34,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    needs:
-      - release
     steps:
     - name: Get tag
       id: tag
@@ -76,8 +72,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    needs:
-      - release
     steps:
     - name: Get tag
       id: tag
