@@ -2,8 +2,6 @@ name: Push Images
 on:
   push:
     tags:
-    branches-ignore:
-      - '**'
 
 jobs:     
   push_image_dockerhub:
