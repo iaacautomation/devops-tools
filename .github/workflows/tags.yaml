@@ -2,9 +2,12 @@ name: Push Images
 on:
   push:
     tags:
+    branches-ignore:
+      - '**'
 
 jobs:     
   push_image_dockerhub:
+    if: contains(github.ref_name,'tag')
     name: Push Deploy Image to Dockerhub
     runs-on: ubuntu-latest
     defaults:
@@ -29,6 +32,7 @@ jobs:
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
 
   push_image_github:
+    if: contains(github.ref_name,'tag')
     name: Push Images to github
     runs-on: ubuntu-latest
     defaults:
@@ -67,6 +71,7 @@ jobs:
         dst: ghcr.io/iaacautomation/devops-tools/diagnose:latest
 
   push_image_gitlab:
+    if: contains(github.ref_name,'tag')
     name: Push Deploy Image to Gitlab
     runs-on: ubuntu-latest
     defaults:
