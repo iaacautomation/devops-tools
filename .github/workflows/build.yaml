@@ -3,7 +3,6 @@ on:
   push:
     paths:
     - "build-base/**"
-  workflow_dispatch:
 
 jobs: 
   release:
