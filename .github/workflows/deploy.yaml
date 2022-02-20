@@ -19,32 +19,12 @@ jobs:
       with:
         fetch-depth: 0
     
-    - name: Get tag
-      if: contains(github.ref,'tag')
-      id: tag
-      uses: dawidd6/action-get-tag@v1
-
     - name: Log in to the Github Container registry
       uses: docker/login-action@v1
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ github.token }}
-
-    - name: Log in to the Docker Container registry
-      if: contains(github.ref,'tag')
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_ACCOUNT }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - name: Log in to the Gitlab Container registry
-      if: contains(github.ref,'tag')
-      uses: docker/login-action@v1
-      with:
-        registry: registry.gitlab.com
-        username: ${{ secrets.GITLAB_ACCOUNT }}
-        password: ${{ secrets.GITLAB_TOKEN }} 
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@master
@@ -67,7 +47,7 @@ jobs:
         cache-to: type=gha,mode=max
     
   push_image_dockerhub:
-    name: Push to dockerhub
+    name: Push deploy image to Dockerhub
     if: contains(github.ref,'tag')
     runs-on: ubuntu-latest
     defaults:
@@ -76,8 +56,17 @@ jobs:
     needs:
       - release
     steps:
-    - name: Push deploy image to dockerhub
-      uses: akhilerm/tag-push-action@v2.0.0
+    - name: Get tag
+      id: tag
+      uses: dawidd6/action-get-tag@v1
+
+    - name: Log in to the Docker Container registry
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_ACCOUNT }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - uses: akhilerm/tag-push-action@v2.0.0
       with:
         src: ghcr.io/iaacautomation/devops-tools/deploy:test
         dst: |
@@ -85,7 +74,7 @@ jobs:
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
 
   push_image_github:
-    name: Push to dockerhub
+    name: Push deploy image to github
     if: contains(github.ref,'tag')
     runs-on: ubuntu-latest
     defaults:
@@ -94,9 +83,18 @@ jobs:
     needs:
       - release
     steps:
-    - name: Push deploy image to ghcr.io
-      if: contains(github.ref,'tag')
-      uses: akhilerm/tag-push-action@v2.0.0
+    - name: Get tag
+      id: tag
+      uses: dawidd6/action-get-tag@v1
+
+    - name: Log in to the Github Container registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+
+    - uses: akhilerm/tag-push-action@v2.0.0
       with:
         src: ghcr.io/iaacautomation/devops-tools/deploy:test
         dst: |
@@ -104,7 +102,7 @@ jobs:
           ghcr.io/iaacautomation/devops-tools/deploy:latest
 
   push_image_gitlab:
-    name: Push to dockerhub
+    name: Push deploy image to Gitlab
     if: contains(github.ref,'tag')
     runs-on: ubuntu-latest
     defaults:
@@ -113,9 +111,18 @@ jobs:
     needs:
       - release
     steps:
-    - name: Push deploy image to Gitlab
-      if: contains(github.ref,'tag')
-      uses: akhilerm/tag-push-action@v2.0.0
+    - name: Get tag
+      id: tag
+      uses: dawidd6/action-get-tag@v1
+
+    - name: Log in to the Gitlab Container registry
+      uses: docker/login-action@v1
+      with:
+        registry: registry.gitlab.com
+        username: ${{ secrets.GITLAB_ACCOUNT }}
+        password: ${{ secrets.GITLAB_TOKEN }} 
+
+    - uses: akhilerm/tag-push-action@v2.0.0
       with:
         src: ghcr.io/iaacautomation/devops-tools/deploy:test
         dst: |
