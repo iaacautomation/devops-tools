@@ -2,8 +2,9 @@ name: Build and Release build Image
 on:
   push:
     paths:
-    - "build-base/**"
-
+      - "build-base/**"
+    tags-ignore:
+      - '**'
 jobs: 
   release:
     name: Build and Release Build Image

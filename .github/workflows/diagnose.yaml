@@ -3,6 +3,8 @@ on:
   push:
     paths:
     - "diagnose/**"
+    tags-ignore:
+      - '**'
 
 jobs: 
   release:

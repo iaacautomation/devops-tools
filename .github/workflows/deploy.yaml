@@ -4,6 +4,8 @@ on:
     paths:
       - "deploy/**"
       - ".github/workflows/deploy.yaml"
+    tags-ignore:
+      - '**'
 
 jobs: 
   release:
