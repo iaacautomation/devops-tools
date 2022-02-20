@@ -1,3 +1,8 @@
+## v1.1.0
+
+1. gitlab-terraform from https://gitlab.com/gitlab-org/terraform-images/-/raw/master/src/bin/gitlab-terraform.sh
+
+
 ## v1.0.0
 
 1. Terraform v1.1.5

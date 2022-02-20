@@ -66,10 +66,10 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
     
-    - name: Security Scan
-      uses: azure/container-scan@v0
-      with:
-        image-name: ghcr.io/iaacautomation/devops-tools/deploy:test
+#    - name: Security Scan
+#      uses: azure/container-scan@v0
+#      with:
+#        image-name: ghcr.io/iaacautomation/devops-tools/deploy:test
     
     - name: Build and Push image for deploy
       if: contains(github.ref,'tag')
