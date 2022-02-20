@@ -44,9 +44,3 @@ jobs:
         build-args: DISTRO=bookworm-slim
         cache-from: type=gha
         cache-to: type=gha,mode=max
-
-    - name: Build and Push image for deploy
-      uses: akhilerm/tag-push-action@v2.0.0
-      with:
-        src: ghcr.io/iaacautomation/devops-tools/build:test
-        dst: ghcr.io/iaacautomation/devops-tools/build:latest

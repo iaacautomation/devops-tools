@@ -4,7 +4,6 @@ on:
     paths:
       - "deploy/**"
       - ".github/workflows/deploy.yaml"
-    tags:
 
 jobs: 
   release:
@@ -45,86 +44,4 @@ jobs:
         build-args: DISTRO=bookworm-slim
         cache-from: type=gha
         cache-to: type=gha,mode=max
-    
-  push_image_dockerhub:
-    name: Push deploy image to Dockerhub
-    if: contains(github.ref,'tag')
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    needs:
-      - release
-    steps:
-    - name: Get tag
-      id: tag
-      uses: dawidd6/action-get-tag@v1
-
-    - name: Log in to the Docker Container registry
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_ACCOUNT }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - uses: akhilerm/tag-push-action@v2.0.0
-      with:
-        src: ghcr.io/iaacautomation/devops-tools/deploy:test
-        dst: |
-          ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
-          ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
-
-  push_image_github:
-    name: Push deploy image to github
-    if: contains(github.ref,'tag')
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    needs:
-      - release
-    steps:
-    - name: Get tag
-      id: tag
-      uses: dawidd6/action-get-tag@v1
-
-    - name: Log in to the Github Container registry
-      uses: docker/login-action@v1
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ github.token }}
-
-    - uses: akhilerm/tag-push-action@v2.0.0
-      with:
-        src: ghcr.io/iaacautomation/devops-tools/deploy:test
-        dst: |
-          ghcr.io/iaacautomation/devops-tools/deploy:${{steps.tag.outputs.tag}}
-          ghcr.io/iaacautomation/devops-tools/deploy:latest
-
-  push_image_gitlab:
-    name: Push deploy image to Gitlab
-    if: contains(github.ref,'tag')
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    needs:
-      - release
-    steps:
-    - name: Get tag
-      id: tag
-      uses: dawidd6/action-get-tag@v1
-
-    - name: Log in to the Gitlab Container registry
-      uses: docker/login-action@v1
-      with:
-        registry: registry.gitlab.com
-        username: ${{ secrets.GITLAB_ACCOUNT }}
-        password: ${{ secrets.GITLAB_TOKEN }} 
-
-    - uses: akhilerm/tag-push-action@v2.0.0
-      with:
-        src: ghcr.io/iaacautomation/devops-tools/deploy:test
-        dst: |
-          ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
-          ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
+ 
