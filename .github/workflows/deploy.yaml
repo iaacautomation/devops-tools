@@ -66,13 +66,17 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
     
-#    - name: Security Scan
-#      uses: azure/container-scan@v0
-#      with:
-#        image-name: ghcr.io/iaacautomation/devops-tools/deploy:test
-    
+  push_image_dockerhub:
+    name: Push to dockerhub
+    if: contains(github.ref,'tag')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    needs:
+      - release
+    steps:
     - name: Push deploy image to dockerhub
-      if: contains(github.ref,'tag')
       uses: akhilerm/tag-push-action@v2.0.0
       with:
         src: ghcr.io/iaacautomation/devops-tools/deploy:test
@@ -80,7 +84,17 @@ jobs:
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
 
-    - name: Push deploy image to dhcr.io
+  push_image_github:
+    name: Push to dockerhub
+    if: contains(github.ref,'tag')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    needs:
+      - release
+    steps:
+    - name: Push deploy image to ghcr.io
       if: contains(github.ref,'tag')
       uses: akhilerm/tag-push-action@v2.0.0
       with:
@@ -89,6 +103,16 @@ jobs:
           ghcr.io/iaacautomation/devops-tools/deploy:${{steps.tag.outputs.tag}}
           ghcr.io/iaacautomation/devops-tools/deploy:latest
 
+  push_image_gitlab:
+    name: Push to dockerhub
+    if: contains(github.ref,'tag')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    needs:
+      - release
+    steps:
     - name: Push deploy image to Gitlab
       if: contains(github.ref,'tag')
       uses: akhilerm/tag-push-action@v2.0.0
