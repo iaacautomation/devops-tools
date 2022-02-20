@@ -46,6 +46,7 @@ RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm terraform && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 COPY --from=build /opt/ansible /opt/ansible
+COPY gitlab-terraform.sh /usr/local/bin/gitlab-terraform
 ENV PATH=/opt/ansible/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 RUN helm plugin install https://github.com/databus23/helm-diff && rm /root/,cache -rfv
