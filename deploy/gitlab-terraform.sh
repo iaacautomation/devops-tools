@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 if [ "${DEBUG_OUTPUT}" = "true" ]; then
     set -x
