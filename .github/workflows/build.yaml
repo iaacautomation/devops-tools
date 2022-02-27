@@ -5,6 +5,8 @@ on:
       - "build-base/**"
     tags-ignore:
       - '**'
+    branches:
+      - '**'
 jobs: 
   release:
     name: Build and Release Build Image

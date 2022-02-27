@@ -6,6 +6,8 @@ on:
       - ".github/workflows/deploy.yaml"
     tags-ignore:
       - '**'
+    branches:
+      - '**'
 
 jobs: 
   release:
