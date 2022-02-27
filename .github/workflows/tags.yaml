@@ -2,6 +2,7 @@ name: Push Images
 on:
   push:
     tags:
+      - '*'
 
 jobs:     
   push_image_dockerhub:
