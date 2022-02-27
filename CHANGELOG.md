@@ -1,11 +1,17 @@
+## v1.2.0
+
+1. terraform 1.1.6
+1. ansible-lint 5.4.0
+1. kubectl 1.23.4
+1. awscli 2.4.19
+
 ## v1.1.0
 
 1. gitlab-terraform from https://gitlab.com/gitlab-org/terraform-images/-/raw/master/src/bin/gitlab-terraform.sh
 
-
 ## v1.0.0
 
-1. Terraform v1.1.5
+1. Terraform 1.1.5
 1. tfenv v2.2.3
 1. kubectl 1.22.3
 1. helm v3.8.0
