@@ -24,7 +24,7 @@ ARG TARGETARCH
 COPY awscli.sh /tmp/
 
 ### Install utilities and packages
-RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install -y jq curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https apt-utils && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install -y jq rsync curl wget git unzip ca-certificates curl gnupg lsb-release apt-transport-https apt-utils && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ## Setup Kubernetes key and repo for kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list 
