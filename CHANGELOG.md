@@ -1,3 +1,18 @@
+## v1.3.0
+
+1. terraform 1.1.7
+1. ansible-lint 6.0.2
+1. ansible-core 2.12.3
+1. kubectl 1.23.5
+1. awsclit 2.4.29
+1. helm 3.8.1
+1. rsync
+1. jq
+1. curl
+1. wget
+1. git
+1. unzip
+
 ## v1.2.0
 
 1. terraform 1.1.6
