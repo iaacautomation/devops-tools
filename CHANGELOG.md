@@ -1,6 +1,12 @@
 ## v1.4.0
 
 1. Helmfile v0.144.0
+1. Terraform 1.1.8
+1. ansible-core 2.12.4
+1. ansible-lint 6.0.2
+1. kubectl 1.23.5
+1. awscli 2.5.3
+1. helm 3.8.1
 
 ## v1.3.0
 
@@ -8,7 +14,7 @@
 1. ansible-lint 6.0.2
 1. ansible-core 2.12.3
 1. kubectl 1.23.5
-1. awsclit 2.4.29
+1. awscli 2.4.29
 1. helm 3.8.1
 1. rsync
 1. jq
