@@ -17,7 +17,7 @@ LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/
 LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:bookworm-slim"
 LABEL org.opencontainers.image.revision v1.2.0
-LABEL build.date 20220326(YYYYMMDDhhmm)
+LABEL build.date 20220407(YYYYMMDDhhmm)
 ARG TARGETARCH
 
 ### Copy awscli install script
@@ -36,7 +36,7 @@ RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb http
 RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/local/tfenv && git checkout v2.2.3 && rm -rf .git .github .gitignore .travis.yml *.md test 
 
 ## Install helmfile
-RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.143.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile 
+RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.144.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile 
 
 ## Install Hashicorp key and repo
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && echo "deb [arch=amd64] https://apt.releases.hashicorp.com bullseye main" | tee /etc/apt/sources.list.d/hashicorp.list 
