@@ -1,3 +1,15 @@
+## v1.5.0
+
+1. Helmfile v0.144.0
+1. Terraform 1.1.9
+1. ansible-core 2.12.4
+1. ansible-lint 6.0.2
+1. kubectl 1.23.6
+1. awscli 2.5.8
+1. helm 3.8.2
+1. node 14.19.1
+1. npm 8.6.0
+   
 ## v1.4.0
 
 1. Helmfile v0.144.0
