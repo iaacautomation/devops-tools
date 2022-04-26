@@ -7,7 +7,7 @@ ARG TARGETARCH
 FROM ghcr.io/iaacautomation/devops-tools/build as build
 RUN python3 -m venv /opt/ansible
 ENV PATH="/opt/ansible/bin:$PATH"
-RUN pip3 install ansible six jmespath distlib ansible-lint --root /opt/ansible/
+RUN pip3 install ansible six jmespath distlib ansible-lint
 
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
