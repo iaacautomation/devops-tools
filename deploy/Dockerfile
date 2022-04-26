@@ -52,5 +52,4 @@ COPY gitlab-terraform.sh /usr/local/bin/gitlab-terraform
 ENV PATH=/opt/ansible/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 RUN helm plugin install https://github.com/databus23/helm-diff && rm /root/,cache -rfv
-ENTRYPOINT ["/usr/local/bin/dumb-init" "--"]
 CMD ["/bin/bash"]
