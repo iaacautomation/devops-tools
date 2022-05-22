@@ -17,7 +17,7 @@ LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/
 LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:bookworm-slim"
 LABEL org.opencontainers.image.revision v1.2.0
-LABEL build.date 20220407(YYYYMMDDhhmm)
+LABEL build.date 20220522(YYYYMMDDhhmm)
 ARG TARGETARCH
 
 ### Copy awscli install script
