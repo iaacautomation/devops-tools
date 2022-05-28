@@ -4,10 +4,15 @@ ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 ARG TARGETARCH 
 
-FROM ghcr.io/iaacautomation/devops-tools/build as build
-RUN python3 -m venv /opt/ansible
-ENV PATH="/opt/ansible/bin:$PATH"
-RUN pip3 install six jmespath distlib
+FROM python:3 as build
+ENV VENV_PATH=/opt/packages \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1  
+RUN python3 -m venv --copies $VENV_PATH
+ENV PATH="$VENV_PATH/bin:$PATH"
+RUN pip3 install checkov ansible ansible-lint setuptools --no-cache-dir
 
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
@@ -15,22 +20,19 @@ LABEL org.opencontainers.image.source "https://github.com/iaacautomation/devops-
 LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
-LABEL org.opencontainers.image.base.name "debian:bookworm-slim"
-LABEL org.opencontainers.image.revision v1.2.0
+LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
+LABEL org.opencontainers.image.revision v1.6.0
 LABEL build.date 20220522(YYYYMMDDhhmm)
 ARG TARGETARCH
 
-### Copy awscli install script
-COPY awscli.sh /tmp/
-
 ### Install utilities and packages
-RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install -y jq rsync curl wget git unzip ca-certificates curl gnupg lsb-release ansible ansible-lint apt-transport-https apt-utils nodejs npm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install --no-install-recommends -y jq python3 libpython3.10-dev curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs npm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ## Setup Kubernetes key and repo for kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list 
 
 ## Setup helm key and repo
-RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list 
+RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list 
 
 ## Install tfenv
 RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/local/tfenv && git checkout v2.2.3 && rm -rf .git .github .gitignore .travis.yml *.md test 
@@ -39,17 +41,18 @@ RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/l
 RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.144.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile 
 
 ## Install Hashicorp key and repo
-RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && echo "deb [arch=amd64] https://apt.releases.hashicorp.com bullseye main" | tee /etc/apt/sources.list.d/hashicorp.list 
-
-## Install awscli
-RUN bash /tmp/awscli.sh $TARGETARCH && rm /tmp/* -rf
+RUN wget -qO - terraform.gpg https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/terraform-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/terraform-archive-keyring.gpg] https://apt.releases.hashicorp.com bullseye main" > /etc/apt/sources.list.d/terraform.list
 
 ## Install kubectl and helm and docker cli
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm terraform && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
-COPY --from=build /opt/ansible /opt/ansible
+### Add tfsec
+RUN wget https://github.com/aquasecurity/tfsec/releases/download/v1.21.2/tfsec-linux-amd64 -O /usr/local/bin/tfsec
+
+ENV VIRTUAL_ENV=/opt/packages
+COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
 COPY gitlab-terraform.sh /usr/local/bin/gitlab-terraform
-ENV PATH=/opt/ansible/bin:$PATH:/usr/local/tfenv/bin
+ENV PATH=$VIRTUAL_ENV/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
-RUN helm plugin install https://github.com/databus23/helm-diff && rm /root/,cache -rfv
+RUN helm plugin install https://github.com/databus23/helm-diff && rm /root/.cache -rfv
 CMD ["/bin/bash"]

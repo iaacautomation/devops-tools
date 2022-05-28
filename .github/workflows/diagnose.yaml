@@ -4,9 +4,9 @@ on:
     paths:
     - "diagnose/**"
     tags-ignore:
-      - '**'
+      - '*'
     branches:
-      - '**'
+      - '*'
 
 jobs: 
   release:
@@ -42,7 +42,9 @@ jobs:
       with:
         context: diagnose
         push: true
-        tags: ghcr.io/iaacautomation/devops-tools/diagnose:test
+        tags: |
+          ghcr.io/iaacautomation/devops-tools/diagnose:test
+          ghcr.io/iaacautomation/devops-tools/diagnose:latest
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=bookworm-slim
         cache-from: type=gha

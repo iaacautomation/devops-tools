@@ -1,3 +1,12 @@
+## v1.6.0
+
+1. Terraform 1.2.1
+1. kubectl 1.24.0
+1. aws-cli 2.7.2
+1. npm 8.10.0
+1. node 16.14.2
+1. helm 3.9.0
+
 ## v1.5.0
 
 1. Helmfile v0.144.0
