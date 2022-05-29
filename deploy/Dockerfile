@@ -2,7 +2,7 @@ ARG DISTRO
 FROM --platform=$BUILDPLATFORM golang:alpine
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
-ARG TARGETARCH 
+ARG TARGETARCH
 
 FROM python:3 as build
 ENV VENV_PATH=/opt/packages \
@@ -24,6 +24,7 @@ LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v1.6.0
 LABEL build.date 20220522(YYYYMMDDhhmm)
 ARG TARGETARCH
+ARG TERRAFORM_VERSION=1.2.1
 
 ### Install utilities and packages
 RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install --no-install-recommends -y jq python3 libpython3.10-dev curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs npm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
@@ -40,11 +41,12 @@ RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/l
 ## Install helmfile
 RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.144.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile 
 
-## Install Hashicorp key and repo
-RUN wget -qO - terraform.gpg https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/terraform-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/terraform-archive-keyring.gpg] https://apt.releases.hashicorp.com bullseye main" > /etc/apt/sources.list.d/terraform.list
+## Install Hashicorp key and repo (Disabled because no arm64 apt repo)
+# RUN wget -qO - terraform.gpg https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/terraform-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/terraform-archive-keyring.gpg] https://apt.releases.hashicorp.com bullseye main" > /etc/apt/sources.list.d/terraform.list
+RUN wget -q -O /usr/local/bin/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && unzip /usr/local/bin/terraform.zip && rm /usr/local/bin/terraform.zip
 
 ## Install kubectl and helm and docker cli
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm terraform && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ### Add tfsec
 RUN wget https://github.com/aquasecurity/tfsec/releases/download/v1.21.2/tfsec-linux-amd64 -O /usr/local/bin/tfsec
