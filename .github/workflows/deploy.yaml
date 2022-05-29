@@ -12,6 +12,10 @@ jobs:
     defaults:
       run:
         shell: bash
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
     steps:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
