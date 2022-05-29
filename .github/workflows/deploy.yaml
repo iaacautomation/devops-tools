@@ -23,8 +23,7 @@ jobs:
       with:
         aws-region: us-east-1
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-        role-duration-seconds: 900
-        role-session-name: GitHub
+        role-session-name: GitHubActions
 
     - name: Checkout
       uses: actions/checkout@v2
