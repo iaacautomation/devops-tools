@@ -18,17 +18,6 @@ jobs:
       pull-requests: write
       packages: read
     steps:
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-region: us-east-1
-        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-        role-duration-seconds: 900
-        role-session-name: GitHub
-
-    - name: Login to Amazon ECR
-      run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-
     - name: Checkout
       uses: actions/checkout@v2
       with:
@@ -92,20 +81,7 @@ jobs:
         role-session-name: GitHub
 
     - name: Login to Amazon ECR
-      if: contains(github.ref,'tag')
-#      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-
-    - name: debug
-      run: echo '${{ tojson(steps.login-ecr.outputs) }}'
-
-    - name: Log in to the ECR Container registry
-      if: contains(github.ref,'tag')
-      uses: docker/login-action@v1
-      with:
-        registry: ${{ secrets.ECR_REPO_PATH }}
-        username: AWS
-        password: ${{ steps.login-ecr.outputs }} 
+      run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
 
     - name: Build and Push images
       uses: docker/build-push-action@v2

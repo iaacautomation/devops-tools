@@ -49,7 +49,7 @@ RUN wget -q -O /usr/local/bin/terraform.zip https://releases.hashicorp.com/terra
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ### Add tfsec
-RUN wget https://github.com/aquasecurity/tfsec/releases/download/v1.21.2/tfsec-linux-amd64 -O /usr/local/bin/tfsec
+RUN wget https://github.com/aquasecurity/tfsec/releases/download/v1.21.2/tfsec-linux-${TARGETARCH} -O /usr/local/bin/tfsec
 
 ENV VIRTUAL_ENV=/opt/packages
 COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
