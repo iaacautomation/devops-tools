@@ -27,18 +27,7 @@ jobs:
         role-session-name: GitHub
 
     - name: Login to Amazon ECR
-      id: login-to-ecr-public
-      run: aws ecr-public get-login-password --region us-east-1
-
-    - name: debug
-      run: echo '${{ tojson(steps.login-to-ecr-public.outputs) }}'
-      
-    - name: Log in to the ECR Container registry
-      uses: docker/login-action@v1
-      with:
-        registry: ${{ secrets.ECR_REPO_PATH }}
-        username: AWS
-        password: ${{ steps.login-ecr.outputs }} 
+      run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
 
     - name: Checkout
       uses: actions/checkout@v2
