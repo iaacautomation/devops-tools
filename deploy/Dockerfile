@@ -36,7 +36,7 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list 
 
 ## Install tfenv
-RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/local/tfenv && git checkout v2.2.3 && rm -rf .git .github .gitignore .travis.yml *.md test && tfenv install ${TERRAFORM_VERSION}
+RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/local/tfenv && git checkout v2.2.3 && rm -rf .git .github .gitignore .travis.yml *.md test
 
 ## Install helmfile
 RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.144.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile 
@@ -52,5 +52,6 @@ COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
 COPY gitlab-terraform.sh /usr/local/bin/gitlab-terraform
 ENV PATH=$VIRTUAL_ENV/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
+RUN tfenv install ${TERRAFORM_VERSION}
 RUN helm plugin install https://github.com/databus23/helm-diff && rm /root/.cache -rf
 CMD ["/bin/bash"]
