@@ -12,6 +12,7 @@ Removed AWS cli
 1. ansible-core 2.12.6
 1. ansible-lint 6.0.2
 1. kubectl 1.24.1
+1. awscli 2.7.4
 
 ## v1.5.0
 
