@@ -27,7 +27,7 @@ ARG TARGETARCH
 ARG TERRAFORM_VERSION=1.2.1
 ARG TFSEC_VERSION=1.21.2
 ### Install utilities and packages
-RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install --no-install-recommends -y jq python3-distutils libpython3.10-dev curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs npm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install --no-install-recommends -y jq python3-distutils libpython3.10-dev curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs npm openssh-client && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ## Setup Kubernetes key and repo for kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list 
