@@ -26,6 +26,7 @@ LABEL build.date 20220522(YYYYMMDDhhmm)
 ARG TARGETARCH
 ARG TERRAFORM_VERSION=1.2.1
 ARG TFSEC_VERSION=1.21.2
+
 ### Install utilities and packages
 RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install --no-install-recommends -y jq python3-distutils libpython3.10-dev curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs npm openssh-client && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
@@ -50,6 +51,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl 
 
 ### Add tfsec
 RUN wget https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec-linux-${TARGETARCH} -O /usr/local/bin/tfsec && chmod +x /usr/local/bin/tfsec
+
+COPY awscli.sh /tmp/
+RUN bash /tmp/awscli.sh ${TARGETARCH} && rm /tmp/aws* -rf
 
 ENV VIRTUAL_ENV=/opt/packages
 COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
