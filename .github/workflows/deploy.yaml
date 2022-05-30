@@ -18,17 +18,6 @@ jobs:
       pull-requests: write
       packages: write
     steps:
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-region: us-east-1
-        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-        role-duration-seconds: 900
-        role-session-name: GitHub
-
-    - name: Login to Amazon ECR
-      run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPO_PATH }}
-
     - name: Checkout
       uses: actions/checkout@v2
       with:
