@@ -97,7 +97,7 @@ jobs:
 
     - name: Login to Amazon ECR
       if: contains(github.ref,'tag')
-      id: ecr-public-login
+#      id: ecr-public-login
       run: echo "::set-output name=ecr_password::$(aws ecr-public get-login-password --region us-east-1)"
 
     - name: Build and Push images
