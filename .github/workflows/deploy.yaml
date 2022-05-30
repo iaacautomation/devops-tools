@@ -89,7 +89,7 @@ jobs:
       if: contains(github.ref,'tag')
       uses: docker/login-action@v2
       with:
-        registry: registry.gitlab.com
+        registry: public.ecr.aws
         username: AWS
         password: ${{ steps.ecr-public-login.outputs.ecr_password }} 
 
