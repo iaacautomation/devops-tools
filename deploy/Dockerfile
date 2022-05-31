@@ -12,7 +12,7 @@ ENV VENV_PATH=/opt/packages \
     PYTHONUNBUFFERED=1  
 RUN python3 -m venv --copies $VENV_PATH
 ENV PATH="$VENV_PATH/bin:$PATH"
-RUN pip3 install checkov ansible ansible-lint sarif-tools --no-cache-dir
+RUN pip3 install ansible-core ansible-lint --no-cache-dir
 
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
@@ -25,11 +25,10 @@ LABEL org.opencontainers.image.revision v1.6.0
 LABEL build.date 20220522(YYYYMMDDhhmm)
 ARG TARGETARCH
 ENV TERRAFORM_VERSION=1.2.1
-ENV TFSEC_VERSION=1.21.2
 ENV TFENV_VERSION=v2.2.3
 
 ### Install utilities and packages
-RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install --no-install-recommends -y jq python3-distutils libpython3.10-dev curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs npm openssh-client && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install --no-install-recommends -y jq libpython3.10 curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs openssh-client && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ## Setup Kubernetes key and repo for kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list 
@@ -49,9 +48,6 @@ RUN wget -q -O /usr/local/bin/terraform.zip https://releases.hashicorp.com/terra
 
 ## Install kubectl and helm and docker cli
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
-
-### Add tfsec
-RUN wget https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec-linux-${TARGETARCH} -O /usr/local/bin/tfsec && chmod +x /usr/local/bin/tfsec
 
 COPY awscli.sh /tmp/
 RUN bash /tmp/awscli.sh ${TARGETARCH} && rm /tmp/aws* -rf

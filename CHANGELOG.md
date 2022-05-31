@@ -6,7 +6,6 @@
 1. node 16.14.2
 1. helm 3.9.0
 1. tfsec v1.21.2
-1. checkov 2.0.1175
 1. ansible-core 2.12.6
 1. ansible-lint 6.0.2
 1. kubectl 1.24.1
