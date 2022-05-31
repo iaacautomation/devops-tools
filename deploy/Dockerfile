@@ -12,7 +12,7 @@ ENV VENV_PATH=/opt/packages \
     PYTHONUNBUFFERED=1  
 RUN python3 -m venv --copies $VENV_PATH
 ENV PATH="$VENV_PATH/bin:$PATH"
-RUN pip3 install checkov ansible ansible-lint sarif --no-cache-dir
+RUN pip3 install checkov ansible ansible-lint sarif-tools --no-cache-dir
 
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
