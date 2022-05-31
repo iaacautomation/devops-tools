@@ -1,6 +1,19 @@
-## v1.6.0
+## v1.7.0
 
-Removed AWS cli
+1. Terraform 1.2.1
+1. kubectl 1.24.0
+1. npm 8.10.0
+1. node 16.14.2
+1. helm 3.9.0
+1. tfsec v1.21.2
+1. checkov 2.0.1175
+1. ansible-core 2.12.6
+1. ansible-lint 6.0.2
+1. kubectl 1.24.1
+1. awscli 2.7.4
+1. sarif-tools 1.0.0
+
+## v1.6.0
 
 1. Terraform 1.2.1
 1. kubectl 1.24.0
