@@ -12,7 +12,7 @@ ENV VENV_PATH=/opt/packages \
     PYTHONUNBUFFERED=1  
 RUN python3 -m venv --copies $VENV_PATH
 ENV PATH="$VENV_PATH/bin:$PATH"
-RUN pip3 install ansible-core ansible-lint --no-cache-dir
+RUN pip3 install ansible ansible-lint --no-cache-dir
 
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
@@ -21,10 +21,10 @@ LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
-LABEL org.opencontainers.image.revision v1.6.0
+LABEL org.opencontainers.image.revision v1.9.0
 LABEL build.date 20220522(YYYYMMDDhhmm)
 ARG TARGETARCH
-ENV TERRAFORM_VERSION=1.2.1
+ENV TERRAFORM_VERSION=1.2.2
 ENV TFENV_VERSION=v2.2.3
 
 ### Install utilities and packages

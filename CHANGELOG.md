@@ -1,3 +1,17 @@
+## v1.9.0
+
+Removed checkov/ansible collections/tfsec/sarif-tools/npm
+
+1. Terraform 1.2.1
+1. kubectl 1.24.0
+1. node 16.14.2
+1. helm 3.9.0
+1. helmdiff v0.144
+1. ansible-core 2.12.6
+1. ansible-lint 6.0.2
+1. kubectl 1.24.1
+1. awscli 2.7.4
+
 ## v1.8.0
 
 Removed checkov/ansible collections/tfsec/sarif-tools/npm
