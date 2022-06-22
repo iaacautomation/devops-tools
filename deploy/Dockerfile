@@ -21,10 +21,10 @@ LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
-LABEL org.opencontainers.image.revision v1.9.0
-LABEL build.date 20220522(YYYYMMDDhhmm)
+LABEL org.opencontainers.image.revision v2.0.0
+LABEL build.date 20220622(YYYYMMDDhhmm)
 ARG TARGETARCH
-ENV TERRAFORM_VERSION=1.2.2
+ENV TERRAFORM_VERSION=1.2.3
 ENV TFENV_VERSION=v2.2.3
 ENV DEBIAN_FRONTEND=noninteractive
 ### Install utilities and packages
