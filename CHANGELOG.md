@@ -1,3 +1,7 @@
+## v2.0.1
+
+1. Terraform 1.2.4
+
 ## v2.0.0
 
 Removed checkov/ansible collections/tfsec/sarif-tools/npm
