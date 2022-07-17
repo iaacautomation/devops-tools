@@ -22,9 +22,9 @@ LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/
 LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.0.1
-LABEL build.date 20220710YYYYMMDDhhmm)
+LABEL build.date 20220717(YYYYMMDDhhmm))
 ARG TARGETARCH
-ENV TERRAFORM_VERSION=1.2.4
+ENV TERRAFORM_VERSION=1.2.5
 ENV TFENV_VERSION=v2.2.3
 ENV DEBIAN_FRONTEND=noninteractive
 ### Install utilities and packages

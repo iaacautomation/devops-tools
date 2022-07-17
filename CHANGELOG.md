@@ -1,3 +1,9 @@
+## v2.0.2
+
+1. Terraform 1.2.5
+1. awscli 2.7.16
+1. helm 3.9.1
+
 ## v2.0.1
 
 1. Terraform 1.2.4
