@@ -2,6 +2,12 @@
 
 1. Terraform 1.2.6
 1. tfenv 3.0.0
+1. ansible 2.13.2
+1. ansible-lint 6.4.0
+1. kubectl 1.24.3
+1. node 16.15.1
+1. helm 3.9.2
+1. awscli 2.7.20
 
 ## v2.0.2
 
