@@ -1,3 +1,8 @@
+## v2.1.0
+
+1. Terraform 1.2.6
+1. tfenv 3.0.0
+
 ## v2.0.2
 
 1. Terraform 1.2.5
