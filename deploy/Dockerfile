@@ -22,10 +22,10 @@ LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/
 LABEL org.opencontainers.image.description "Deployment Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.0.1
-LABEL build.date 20220717(YYYYMMDDhhmm))
+LABEL build.date 20220801(YYYYMMDDhhmm))
 ARG TARGETARCH
-ENV TERRAFORM_VERSION=1.2.5
-ENV TFENV_VERSION=v2.2.3
+ENV TERRAFORM_VERSION=1.2.6
+ENV TFENV_VERSION=v3.0.0
 ENV DEBIAN_FRONTEND=noninteractive
 ### Install utilities and packages
 RUN apt-get update &&  apt-get install --no-install-recommends -y jq libpython3.10 curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs openssh-client && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
