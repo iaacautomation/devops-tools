@@ -24,7 +24,7 @@ LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.0.1
 LABEL build.date 20220801(YYYYMMDDhhmm))
 ARG TARGETARCH
-ENV TERRAFORM_VERSION=1.2.6
+ENV TERRAFORM_VERSION=1.2.9
 ENV TFENV_VERSION=v3.0.0
 ENV DEBIAN_FRONTEND=noninteractive
 ### Install utilities and packages

@@ -10,5 +10,5 @@ then
 fi 
 if [[ -f awscliv2.zip ]]
 then
-  unzip -q awscliv2.zip && ./aws/install && rm -rf aws
+  unzip -q awscliv2.zip && ./aws/install --update && rm -rf aws awscliv2.zip
 fi
