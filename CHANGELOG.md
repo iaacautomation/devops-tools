@@ -1,3 +1,12 @@
+## v2.3.0
+
+1. Terraform 1.3.2
+1. ansible 2.13.5
+1. ansible-lint 6.8.1
+1. kubectl 1.25.2
+1. node 18.7.0
+1. awscli 2.8.2
+ 
 ## v2.2.0
 
 1. Terraform 1.2.9
