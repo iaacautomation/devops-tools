@@ -1,3 +1,12 @@
+## v2.3.3
+
+1. Terraform 1.3.3
+1. ansible-lint 6.8.2
+1. kubectl 1.25.3
+1. node 18.10.0
+1. awscli 2.8.5
+1. helm v3.10.1
+
 ## v2.3.0
 
 1. Terraform 1.3.2
