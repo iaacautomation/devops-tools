@@ -1,11 +1,17 @@
-#!/bin/bash -e
+#!/bin/sh -e
+
+# Helpers
+terraform_is_at_least() {
+  [ "${1}" = "$(terraform -version | awk -v min="${1}" '/^Terraform v/{ sub(/^v/, "", $2); print min; print $2 }' | sort -V | head -n1)" ]
+  return $?
+}
 
 if [ "${DEBUG_OUTPUT}" = "true" ]; then
     set -x
 fi
 
-plan_cache="plan.cache"
-plan_json="plan.json"
+TF_PLAN_CACHE="${TF_PLAN_CACHE:-plan.cache}"
+TF_PLAN_JSON="${TF_PLAN_JSON:-plan.json}"
 
 JQ_PLAN='
   (
@@ -29,6 +35,13 @@ fi
 # If TF_ADDRESS is unset but TF_STATE_NAME is provided, then default to GitLab backend in current project
 if [ -n "${TF_STATE_NAME}" ]; then
   TF_ADDRESS="${TF_ADDRESS:-${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${TF_STATE_NAME}}"
+fi
+
+# If TF_ROOT is set then use the -chdir option
+if [ -n "${TF_ROOT}" ]; then
+  abs_tf_root=$(cd "${CI_PROJECT_DIR}"; realpath "${TF_ROOT}")
+
+  TF_CHDIR_OPT="-chdir=${abs_tf_root}"
 fi
 
 # Set variables for the HTTP backend to default to TF_* values
@@ -55,21 +68,50 @@ export TF_VAR_CI_PROJECT_URL="${TF_VAR_CI_PROJECT_URL:-${CI_PROJECT_URL}}"
 # Use terraform automation mode (will remove some verbose unneeded messages)
 export TF_IN_AUTOMATION=true
 
+# Set a Terraform CLI Configuration File
+export TF_CLI_CONFIG_FILE="${TF_CLI_CONFIG_FILE:-$HOME/.terraformrc}"
+
+# Authenticate to private registry
+if terraform_is_at_least 1.2.0; then
+  # From Terraform 1.2.0 and later, we can use TF_TOKEN_your_domain_name to authenticate to registry.
+  # The credential environment variable has the following requirements:
+  # - Domain names containing non-ASCII characters are converted to their punycode equivalent with an ACE prefix
+  # - Periods are encoded as underscores
+  # - Hyphens are encoded as double underscores
+  # For more info, see https://www.terraform.io/cli/config/config-file#environment-variable-credentials
+  if [ "${CI_SERVER_PROTOCOL}" = "https" ] && [ -n "${CI_SERVER_HOST}" ]; then
+    tf_token_var_name=TF_TOKEN_$(idn2 "${CI_SERVER_HOST}" | sed 's/\./_/g' | sed 's/-/__/g')
+    export "${tf_token_var_name}"="${CI_JOB_TOKEN}"
+  fi
+else
+  # If we have a version older than 1.2.0, we use the credentials file.
+  # This authentication method can be safely deleted when we'll remove support for Terraform 1.0 and 1.1
+  if [ ! -f "${TF_CLI_CONFIG_FILE}" ] && [ "${CI_SERVER_PROTOCOL}" = "https" ] && [ -n "${CI_SERVER_HOST}" ] && [ -n "${CI_SERVER_PORT}" ]; then
+  cat << EOF > "${TF_CLI_CONFIG_FILE}"
+credentials "${CI_SERVER_HOST}:${CI_SERVER_PORT}" {
+token = "${CI_JOB_TOKEN}"
+}
+EOF
+  fi
+fi
+
 init() {
-  terraform init "${@}" -input=false -reconfigure
+  # We want to allow word splitting here for TF_INIT_FLAGS
+  # shellcheck disable=SC2086
+  terraform "${TF_CHDIR_OPT}" init "${@}" -input=false -reconfigure ${TF_INIT_FLAGS}
 }
 
 case "${1}" in
   "apply")
     init
-    terraform "${@}" -input=false "${plan_cache}"
+    terraform "${TF_CHDIR_OPT}" "${@}" -input=false "${TF_PLAN_CACHE}"
   ;;
   "destroy")
     init
-    terraform "${@}" -auto-approve "${plan_cache}"
+    terraform "${TF_CHDIR_OPT}" "${@}" -auto-approve
   ;;
   "fmt")
-    terraform "${@}" -check -diff -recursive
+    terraform "${TF_CHDIR_OPT}" "${@}" -check -diff -recursive
   ;;
   "init")
     # shift argument list „one to the left“ to not call 'terraform init init'
@@ -78,25 +120,16 @@ case "${1}" in
   ;;
   "plan")
     init
-    terraform "${@}" -input=false -out="${plan_cache}"
+    terraform "${TF_CHDIR_OPT}" "${@}" -input=false -out="${TF_PLAN_CACHE}"
   ;;
   "plan-json")
-    terraform show -json "${plan_cache}" | \
+    terraform "${TF_CHDIR_OPT}" show -json "${TF_PLAN_CACHE}" | \
       jq -r "${JQ_PLAN}" \
-      > "${plan_json}"
-  ;;
-  "plan-destroy")
-    init
-    terraform "${@}" -input=false -out="${plan_cache}" -destroy
-  ;;
-  "plan-destroy-json")
-    terraform show -json "${plan_cache}" -destroy | \
-      jq -r "${JQ_PLAN}" \
-      > "${plan_json}"
+      > "${TF_PLAN_JSON}"
   ;;
   "validate")
     init -backend=false
-    terraform "${@}"
+    terraform "${TF_CHDIR_OPT}" "${@}"
   ;;
   *)
     terraform "${@}"
