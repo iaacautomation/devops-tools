@@ -24,7 +24,7 @@ LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.0.1
 LABEL build.date 20220801(YYYYMMDDhhmm))
 ARG TARGETARCH
-ENV TERRAFORM_VERSION=1.3.3
+ENV TERRAFORM_VERSION=1.3.5
 ENV TFENV_VERSION=v3.0.0
 ENV DEBIAN_FRONTEND=noninteractive
 ### Install utilities and packages
@@ -35,9 +35,6 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 
 ## Setup helm key and repo
 RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list 
-
-## Setup Azure key and repo
-RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null && echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $DISTRO main" |  tee /etc/apt/sources.list.d/azure-cli.list
 
 ## Install tfenv
 RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/local/tfenv && git checkout ${TFENV_VERSION} && rm -rf .git .github .gitignore .travis.yml *.md test 
