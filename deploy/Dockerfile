@@ -31,10 +31,13 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update &&  apt-get install --no-install-recommends -y jq libpython3.10 curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs openssh-client idn2 && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ## Setup Kubernetes key and repo for kubectl
-RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list 
+RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list && 
 
 ## Setup helm key and repo
 RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list 
+
+## Setup Azure key and repo
+RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null && echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $DISTRO main" |  tee /etc/apt/sources.list.d/azure-cli.list
 
 ## Install tfenv
 RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/local/tfenv && git checkout ${TFENV_VERSION} && rm -rf .git .github .gitignore .travis.yml *.md test 
@@ -47,7 +50,7 @@ RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releas
 RUN wget -q -O /usr/local/bin/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && unzip /usr/local/bin/terraform.zip && rm /usr/local/bin/terraform.zip && mv terraform /usr/local/bin && chmod +x /usr/local/bin/terraform
 
 ## Install kubectl and helm and docker cli
-RUN apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+RUN apt-get update && apt-get install -y kubectl helm  azure-cli && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 COPY awscli.sh /tmp/
 RUN bash /tmp/awscli.sh ${TARGETARCH} && rm /tmp/aws* -rf

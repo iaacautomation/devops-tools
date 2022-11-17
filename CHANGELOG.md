@@ -1,3 +1,8 @@
+## v2.3.5
+
+1. Terraform 1.3.5
+1. azure-cli
+
 ## v2.3.3
 
 1. Terraform 1.3.3
