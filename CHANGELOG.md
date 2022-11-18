@@ -1,9 +1,17 @@
 ## v2.3.5
 
+1. Terraform 1.3.5
+1. ansible 2.13.6
+1. ansible-lint 6.8.6
+1. helm 3.10.2
+1. helmfile 0.144.0
+1. node 18.10.0
+1. tfenv 3.0.0
+
 Removed awscli from this version not useful in CI
 
-1. Terraform 1.3.5
-
+1. kubectl
+2. awscli
 
 ## v2.3.3
 
