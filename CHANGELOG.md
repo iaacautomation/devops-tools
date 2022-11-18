@@ -1,7 +1,9 @@
 ## v2.3.5
 
+Removed awscli from this version not useful in CI
+
 1. Terraform 1.3.5
-1. azure-cli
+
 
 ## v2.3.3
 
