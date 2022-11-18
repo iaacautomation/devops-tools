@@ -2,9 +2,8 @@ name: Build and Release Deploy Image
 on:
   push:
     paths:
-      - "deploy/*"
-      - ".github/workflows/deploy.yaml"
-
+      - 'deploy/**'
+  
 jobs: 
   release:
     name: Build and Release Deploy Image
