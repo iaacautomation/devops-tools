@@ -50,9 +50,6 @@ RUN wget -q -O /usr/local/bin/terraform.zip https://releases.hashicorp.com/terra
 ## Install kubectl and helm and docker cli
 RUN apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
-COPY awscli.sh /tmp/
-RUN bash /tmp/awscli.sh ${TARGETARCH} && rm /tmp/aws* -rf
-
 ENV VIRTUAL_ENV=/opt/packages
 COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
 COPY gitlab-terraform.sh /usr/local/bin/gitlab-terraform
