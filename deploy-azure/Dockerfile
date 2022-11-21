@@ -16,7 +16,7 @@ RUN pip3 install ansible ansible-lint six --no-cache-dir
 
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
-LABEL org.opencontainers.image.source "https://github.com/iaacautomation/devops-tools/tree/main/deploy"
+LABEL org.opencontainers.image.source "https://github.com/iaacautomation/devops-tools/tree/main/deploy-azure"
 LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
@@ -31,32 +31,17 @@ ARG TARGETARCH
 ### Install utilities and packages
 RUN apt-get update &&  apt-get install --no-install-recommends -y jq libpython3.11 curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs openssh-client idn2 && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
-## Setup Kubernetes key and repo for kubectl
-RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
+## Setup Azure key and repo
+RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null && echo "deb [arch=${TARGETARCH}] https://packages.microsoft.com/repos/azure-cli/ bullseye main" |  tee /etc/apt/sources.list.d/azure-cli.list
 
-## Setup helm key and repo
-RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list 
-
-## Install tfenv
-RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/local/tfenv && git checkout ${TFENV_VERSION} && rm -rf .git .github .gitignore .travis.yml *.md test
-
-## Install helmfile
-RUN wget -q -O /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v0.144.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile
-
-## Install Hashicorp key and repo (Disabled because no arm64 apt repo)
 # RUN wget -qO - terraform.gpg https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/terraform-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/terraform-archive-keyring.gpg] https://apt.releases.hashicorp.com bullseye main" > /etc/apt/sources.list.d/terraform.list
 RUN wget -q -O /usr/local/bin/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && unzip /usr/local/bin/terraform.zip && rm /usr/local/bin/terraform.zip && mv terraform /usr/local/bin && chmod +x /usr/local/bin/terraform
 
 ## Install kubectl and helm and docker cli
-RUN apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
-
-COPY awscli.sh /tmp/
-RUN bash /tmp/awscli.sh ${TARGETARCH} && rm /tmp/aws* -rf
+RUN apt-get update && apt-get install -y azure-cli && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ENV VIRTUAL_ENV=/opt/packages
 COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
 COPY gitlab-terraform.sh /usr/local/bin/gitlab-terraform
 ENV PATH=$VIRTUAL_ENV/bin:$PATH:/usr/local/tfenv/bin
-ENV HELM_PLUGINS=/usr/local/share/helm/plugins
-RUN helm plugin install https://github.com/databus23/helm-diff && rm /root/.cache -rf
 CMD ["/bin/bash"]
