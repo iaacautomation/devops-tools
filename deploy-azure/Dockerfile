@@ -10,9 +10,9 @@ LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "Docker Image with terraform ans azure for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
-LABEL org.opencontainers.image.revision v2.0.1
+LABEL org.opencontainers.image.revision v2.3.9
 LABEL build.date 20220801(YYYYMMDDhhmm))
-ENV TERRAFORM_VERSION=1.3.5
+ENV TERRAFORM_VERSION=1.3.9
 ENV TFENV_VERSION=v3.0.0
 ENV DEBIAN_FRONTEND=noninteractive
 ARG TARGETARCH
