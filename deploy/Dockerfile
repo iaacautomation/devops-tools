@@ -26,6 +26,7 @@ LABEL build.date 20230221(YYYYMMDDhhmm))
 ENV TERRAFORM_VERSION=1.3.9
 ENV TFENV_VERSION=v3.0.0
 ENV DEBIAN_FRONTEND=noninteractive
+ENV HELMFILE_VERSION=0.151.0
 ARG TARGETARCH
 
 ### Install utilities and packages
@@ -41,7 +42,7 @@ RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/
 RUN git clone https://github.com/tfutils/tfenv.git /usr/local/tfenv && cd /usr/local/tfenv && git checkout ${TFENV_VERSION} && rm -rf .git .github .gitignore .travis.yml *.md test
 
 ## Install helmfile
-RUN wget -q -O /usr/local/bin/helmfile https://github.com/helmfile/helmfile/releases/download/v0.151.0/helmfile_linux_${TARGETARCH}  && chmod +x /usr/local/bin/helmfile
+RUN wget -q -O /tmp/helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xvfz /tmp/helmfile.tar.gz && mv /tmp/helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile
 
 ## Install Hashicorp key and repo (Disabled because no arm64 apt repo)
 # RUN wget -qO - terraform.gpg https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/terraform-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/terraform-archive-keyring.gpg] https://apt.releases.hashicorp.com bullseye main" > /etc/apt/sources.list.d/terraform.list
