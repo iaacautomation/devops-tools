@@ -41,14 +41,14 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list 
 
 ## Install tfenv
-RUN wget https://github.com/tfutils/tfenv/archive/refs/tags/v3.0.0.tar.gz -O tfenv.tar.gz && tar xfz tfenv.tar.gz && rm tfenv.tar.gz && cp tfenv/* /usr/local/bin/ -a
+RUN wget https://github.com/tfutils/tfenv/archive/refs/tags/${TFENV_VERSION}.tar.gz -O tfenv.tar.gz && tar xvfz tfenv.tar.gz  && cp tfenv-*/bin/* /usr/local/bin/ -a && rm tfenv* -rf
 
 ## Install helmfile
-RUN wget -q -O helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xfz helmfile.tar.gz && rm helmfile.tar.gz && mv helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile
+RUN wget -q -O helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xfz helmfile.tar.gz  && mv helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile && rm helmfile* -rf
 
 ## Install Hashicorp key and repo (Disabled because no arm64 apt repo)
 # RUN wget -qO - terraform.gpg https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/terraform-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/terraform-archive-keyring.gpg] https://apt.releases.hashicorp.com bullseye main" > /etc/apt/sources.list.d/terraform.list
-RUN wget -q -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && unzip terraform.zip && rm terraform.zip && mv terraform /usr/local/bin && chmod +x /usr/local/bin/terraform
+RUN wget -q -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && unzip terraform.zip  && mv terraform /usr/local/bin && chmod +x /usr/local/bin/terraform && rm terraform* -fr
 
 ## Install kubectl and helm and docker cli
 RUN apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
