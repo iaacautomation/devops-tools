@@ -57,7 +57,7 @@ jobs:
         tags: ghcr.io/iaacautomation/devops-tools/deploy-azure:test
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
-        build-args: |
+        build-args:
           DISTRO=bookworm-slim
           TERRAFORM_VERSION="${{ inputs.TERRAFORM_VERSION }}"
           GITLAB_TERRAFORM_VERSION="${{ inputs.GITLAB_TERRAFORM_VERSION }}"
