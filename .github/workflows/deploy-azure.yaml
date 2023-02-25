@@ -58,8 +58,8 @@ jobs:
         platforms: linux/amd64,linux/arm64
         build-args: |
           DISTRO=bookworm-slim
-          TERRAFORM_VERSION=${{ inputs.TERRAFORM_VERSION }}
-          GITLAB_TERRAFORM_VERSION=${{ inputs.GITLAB_TERRAFORM_VERSION }}
+          TERRAFORM_VERSION="${{ inputs.TERRAFORM_VERSION }}"
+          GITLAB_TERRAFORM_VERSION="${{ inputs.GITLAB_TERRAFORM_VERSION }}"
         cache-from: type=gha
         cache-to: type=gha,mode=max
  
