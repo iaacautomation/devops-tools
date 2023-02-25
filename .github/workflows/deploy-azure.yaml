@@ -114,7 +114,7 @@ jobs:
           ${{ secrets.ECR_REPO_PATH }}/deploy-azure:latest
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64 ,linux/arm64
-        build-args: |
+        build-args:
           DISTRO=bookworm-slim
           TERRAFORM_VERSION=${{ inputs.TERRAFORM_VERSION }}
           GITLAB_TERRAFORM_VERSION=${{ inputs.GITLAB_TERRAFORM_VERSION }}
