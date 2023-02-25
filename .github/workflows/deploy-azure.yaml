@@ -4,17 +4,7 @@ on:
     paths:
       - 'deploy-azure/**'
       - '.github/workflows/deploy-azure.yaml'
-  workflow_dispatch:
-    TERRAFORM_VERSION:
-      description: Terraform version to use
-      required: false
-      default: "1.3.9"
-      type: string
-    GITLAB_TERRAFORM_VERSION:
-      description: Terraform version to use
-      required: false
-      default: "v0.50.3"
-      type: string  
+  
 jobs: 
   release:
     name: Build and Release Deploy Image
@@ -57,10 +47,7 @@ jobs:
         tags: ghcr.io/iaacautomation/devops-tools/deploy-azure:test
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
-        build-args:
-          DISTRO=bookworm-slim
-          TERRAFORM_VERSION="${{ inputs.TERRAFORM_VERSION }}"
-          GITLAB_TERRAFORM_VERSION="${{ inputs.GITLAB_TERRAFORM_VERSION }}"
+        build-args: DISTRO=bookworm-slim
         cache-from: type=gha
         cache-to: type=gha,mode=max
  
@@ -114,8 +101,5 @@ jobs:
           ${{ secrets.ECR_REPO_PATH }}/deploy-azure:latest
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64 ,linux/arm64
-        build-args:
-          DISTRO=bookworm-slim
-          TERRAFORM_VERSION="${{ inputs.TERRAFORM_VERSION }}"
-          GITLAB_TERRAFORM_VERSION="${{ inputs.GITLAB_TERRAFORM_VERSION }}"
+        build-args: DISTRO=bookworm-slim
         cache-from: type=gha
