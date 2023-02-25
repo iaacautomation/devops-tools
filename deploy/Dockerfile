@@ -41,7 +41,7 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list 
 
 ## Install tfenv
-RUN wget https://github.com/tfutils/tfenv/archive/refs/tags/${TFENV_VERSION}.tar.gz -O tfenv.tar.gz && tar xvfz tfenv.tar.gz  && cp tfenv-*/bin/* /usr/local/bin/ -a && rm tfenv* -rf
+RUN wget https://github.com/tfutils/tfenv/archive/refs/tags/${TFENV_VERSION}.tar.gz -O tfenv.tar.gz && tar xvfz tfenv.tar.gz  && cp tfenv-*/* /usr/local/ -a && rm tfenv* -rf
 
 ## Install helmfile
 RUN wget -q -O helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xfz helmfile.tar.gz  && mv helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile && rm helmfile* -rf
