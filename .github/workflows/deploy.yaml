@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'deploy/**'
+      - '.github/workflows/deploy.yaml'
   workflow_dispatch:
     TERRAFORM_VERSION:
       description: Terraform version to use
