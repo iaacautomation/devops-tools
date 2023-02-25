@@ -13,7 +13,7 @@ on:
     TFENV_VERSION:
       description: Terraform version to use
       required: false
-      default: "3.0.0"
+      default: "v3.0.0"
       type: string
     HELMFILE_VERSION:
       description: Terraform version to use
