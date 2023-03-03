@@ -54,7 +54,7 @@ jobs:
     - name: Get tag
       if: contains(github.ref,'tag')
       id: tag
-      uses: devops-actions/action-get-tag@v1.1
+      uses: devops-actions/action-get-tag@v1
 
     - name: Log in to the Docker Container registry
       if: contains(github.ref,'tag')
