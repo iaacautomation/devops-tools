@@ -12,7 +12,7 @@ LABEL org.opencontainers.image.description "Docker Image with terraform ans azur
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.3.9
 LABEL build.date 20220801(YYYYMMDDhhmm))
-ARG TERRAFORM_VERSION=1.3.9
+ARG TERRAFORM_VERSION=1.4.0
 ENV DEBIAN_FRONTEND=noninteractive
 ARG GITLAB_TERRAFORM_VERSION=v0.50.3
 ARG TARGETARCH

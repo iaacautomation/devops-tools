@@ -23,7 +23,7 @@ LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.3.9
 LABEL build.date 20230221(YYYYMMDDhhmm))
-ARG TERRAFORM_VERSION=1.3.9
+ARG TERRAFORM_VERSION=1.4.0
 ARG TFENV_VERSION=v3.0.0
 ENV DEBIAN_FRONTEND=noninteractive
 ARG HELMFILE_VERSION=0.151.0
