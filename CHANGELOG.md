@@ -1,13 +1,25 @@
+## v2.4.4
+
+1. Terraform 1.4.4
+1. ansible 2.14.4
+1. helm 3.11.2
+1. helmfile 0.152.0
+1. kubectl 1.26.3
+1. node 18.13.0
+1. ansible-lint 6.14.4
+1. azure-cli 2.47.0
+1. tfenv v3.0.0
+
 ## v2.4.0
 
 1. Terraform 1.4.0
-1. ansible 2.14.3
-1. ansible-lint 6.14.2
-1. helm 3.11.2
-1. helmfile 0.151.0
-1. node 18.13.0
-1. kubectl 1.26.2
-1. azure-cli 2.46.0
+2. ansible 2.14.3
+3. ansible-lint 6.14.2
+4. helm 3.11.2
+5. helmfile 0.151.0
+6. node 18.13.0
+7. kubectl 1.26.2
+8. azure-cli 2.46.0
 
 ## v2.3.9
 
