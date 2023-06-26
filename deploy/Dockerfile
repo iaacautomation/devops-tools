@@ -23,11 +23,11 @@ LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.3.9
 LABEL build.date 20230404(YYYYMMDDhhmm))
-ARG TERRAFORM_VERSION=1.4.6
+ARG TERRAFORM_VERSION=1.5.1
 ARG TFENV_VERSION=v3.0.0
 ENV DEBIAN_FRONTEND=noninteractive
 ARG HELMFILE_VERSION=0.154.0
-ARG GITLAB_TERRAFORM_VERSION=v1.2.0
+ARG GITLAB_TERRAFORM_VERSION=v1.3.0
 ARG TARGETARCH
 WORKDIR /tmp
 
@@ -58,5 +58,5 @@ COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
 RUN wget https://gitlab.com/gitlab-org/terraform-images/-/raw/${GITLAB_TERRAFORM_VERSION}/src/bin/gitlab-terraform.sh -O /usr/local/bin/gitlab-terraform && chmod +x /usr/local/bin/gitlab-terraform
 ENV PATH=$VIRTUAL_ENV/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
-RUN helm plugin install https://github.com/databus23/helm-diff && rm /root/.cache -rf
+RUN helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
 CMD ["/bin/bash"]

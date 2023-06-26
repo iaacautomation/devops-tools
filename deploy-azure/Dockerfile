@@ -12,9 +12,9 @@ LABEL org.opencontainers.image.description "Docker Image with terraform ans azur
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.3.9
 LABEL build.date 20230404(YYYYMMDDhhmm))
-ARG TERRAFORM_VERSION=1.4.6
+ARG TERRAFORM_VERSION=1.5.1
 ENV DEBIAN_FRONTEND=noninteractive
-ARG GITLAB_TERRAFORM_VERSION=v1.2.0
+ARG GITLAB_TERRAFORM_VERSION=v1.3.0
 ARG TARGETARCH
 
 ### Install idn2 for azure
