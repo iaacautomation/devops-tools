@@ -14,6 +14,7 @@
 1. azure-cli 2.49.0
 1. tfenv v3.0.0
 1. gitlab-terraform v1.3.0
+1. kubectl 1.27.3
 
 ## v2.4.6
 
