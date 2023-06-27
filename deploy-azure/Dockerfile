@@ -1,4 +1,3 @@
-ARG DISTRO
 FROM --platform=$BUILDPLATFORM golang:alpine
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
@@ -9,7 +8,7 @@ LABEL org.opencontainers.image.source "https://github.com/iaacautomation/devops-
 LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "Docker Image with terraform ans azure for CI PIpelines"
-LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
+LABEL org.opencontainers.image.base.name "mcr.microsoft.com/azure-cli"
 LABEL org.opencontainers.image.revision v2.3.9
 LABEL build.date 20230404(YYYYMMDDhhmm))
 ARG TERRAFORM_VERSION=1.5.1
