@@ -1,20 +1,37 @@
-## v2.5.1
+## v2.5.3
 
-1. Terraform 1.5.1
-1. ansible 2.15.1
-1. helm 3.12.1
+1. Terraform 1.5.3
+1. ansible 2.15.2
+1. helm 3.12.2
   1. diff 3.8.1
   1. git 0.12.0
   1. s3 0.14.0
   1. secrets 4.1.1
-1. helmfile 0.154.0
-1. kubectl 1.27.2
+1. helmfile 0.155.0
+1. kubectl 1.27.4
 1. node 18.13.0
 1. ansible-lint 6.17.2
-1. azure-cli 2.49.0
+1. azure-cli 2.50.0
 1. tfenv v3.0.0
-1. gitlab-terraform v1.3.0
-1. kubectl 1.27.3
+1. gitlab-terraform v1.4.0
+   
+## v2.5.1
+
+1. Terraform 1.5.1
+2. ansible 2.15.1
+3. helm 3.12.1
+  1. diff 3.8.1
+  2. git 0.12.0
+  3. s3 0.14.0
+  4. secrets 4.1.1
+4. helmfile 0.154.0
+5. kubectl 1.27.2
+6. node 18.13.0
+7. ansible-lint 6.17.2
+8. azure-cli 2.49.0
+9. tfenv v3.0.0
+10. gitlab-terraform v1.3.0
+11. kubectl 1.27.3
 
 ## v2.4.6
 
