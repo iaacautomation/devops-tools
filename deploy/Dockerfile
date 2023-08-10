@@ -56,7 +56,7 @@ ENV PATH=$VIRTUAL_ENV/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 RUN helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
 
-RUN useradd -m /home/deploy -s /bin/bash deploy
+RUN useradd -ms /bin/bash deploy
 USER deploy
 WORKDIR /home/deploy
 CMD ["/bin/bash"]
