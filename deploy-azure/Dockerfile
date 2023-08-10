@@ -9,8 +9,8 @@ LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "Docker Image with terraform ans azure for CI PIpelines"
 LABEL org.opencontainers.image.base.name "mcr.microsoft.com/azure-cli"
-LABEL org.opencontainers.image.revision v2.3.9
-LABEL build.date 20230404(YYYYMMDDhhmm))
+LABEL org.opencontainers.image.revision v2.5.4
+LABEL build.date 20230810(YYYYMMDDhhmm))
 ARG TERRAFORM_VERSION=1.5.5
 ENV DEBIAN_FRONTEND=noninteractive
 ARG GITLAB_TERRAFORM_VERSION=v1.4.0
@@ -23,7 +23,7 @@ RUN apk add idn2-utils
 RUN wget -q -O /usr/local/bin/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && unzip /usr/local/bin/terraform.zip && rm /usr/local/bin/terraform.zip && mv terraform /usr/local/bin && chmod +x /usr/local/bin/terraform
 RUN wget https://gitlab.com/gitlab-org/terraform-images/-/raw/${GITLAB_TERRAFORM_VERSION}/src/bin/gitlab-terraform.sh -O /usr/local/bin/gitlab-terraform && chmod +x /usr/local/bin/gitlab-terraform
 
-RUN adduser deploy
+RUN adduser -h /home/deploy -s /bin/bash -D deploy 
 USER deploy
 WORKDIR /home/deploy
 CMD ["/bin/bash"]

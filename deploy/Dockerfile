@@ -21,8 +21,8 @@ LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
-LABEL org.opencontainers.image.revision v2.5.3
-LABEL build.date 20230722(YYYYMMDD))
+LABEL org.opencontainers.image.revision v2.5.5
+LABEL build.date 20230810(YYYYMMDD))
 ARG TERRAFORM_VERSION=1.5.5
 ENV DEBIAN_FRONTEND=noninteractive
 ARG HELMFILE_VERSION=0.155.1
@@ -56,7 +56,7 @@ ENV PATH=$VIRTUAL_ENV/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 RUN helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
 
-RUN adduser deploy
+RUN useradd -m /home/deploy -s /bin/bash deploy
 USER deploy
 WORKDIR /home/deploy
 CMD ["/bin/bash"]
