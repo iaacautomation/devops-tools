@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.description "Docker Image with terraform ans azur
 LABEL org.opencontainers.image.base.name "mcr.microsoft.com/azure-cli"
 LABEL org.opencontainers.image.revision v2.3.9
 LABEL build.date 20230404(YYYYMMDDhhmm))
-ARG TERRAFORM_VERSION=1.5.3
+ARG TERRAFORM_VERSION=1.5.5
 ENV DEBIAN_FRONTEND=noninteractive
 ARG GITLAB_TERRAFORM_VERSION=v1.4.0
 ARG TARGETARCH
@@ -23,5 +23,7 @@ RUN apk add idn2-utils
 RUN wget -q -O /usr/local/bin/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && unzip /usr/local/bin/terraform.zip && rm /usr/local/bin/terraform.zip && mv terraform /usr/local/bin && chmod +x /usr/local/bin/terraform
 RUN wget https://gitlab.com/gitlab-org/terraform-images/-/raw/${GITLAB_TERRAFORM_VERSION}/src/bin/gitlab-terraform.sh -O /usr/local/bin/gitlab-terraform && chmod +x /usr/local/bin/gitlab-terraform
 
-WORKDIR /root/
+RUN adduser deploy
+USER deploy
+WORKDIR /home/deploy
 CMD ["/bin/bash"]

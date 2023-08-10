@@ -23,10 +23,9 @@ LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.5.3
 LABEL build.date 20230722(YYYYMMDD))
-ARG TERRAFORM_VERSION=1.5.3
-ARG TFENV_VERSION=v3.0.0
+ARG TERRAFORM_VERSION=1.5.5
 ENV DEBIAN_FRONTEND=noninteractive
-ARG HELMFILE_VERSION=0.155.0
+ARG HELMFILE_VERSION=0.155.1
 ARG GITLAB_TERRAFORM_VERSION=v1.4.0
 ARG TARGETARCH
 WORKDIR /tmp
@@ -39,9 +38,6 @@ RUN curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dea
 
 ## Setup helm key and repo
 RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list 
-
-## Install tfenv
-RUN wget https://github.com/tfutils/tfenv/archive/refs/tags/${TFENV_VERSION}.tar.gz -O tfenv.tar.gz && tar xvfz tfenv.tar.gz  && cp tfenv-*/* /usr/local/ -a && rm tfenv* -rf
 
 ## Install helmfile
 RUN wget -q -O helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xfz helmfile.tar.gz  && mv helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile && rm helmfile* -rf
@@ -59,5 +55,8 @@ RUN wget https://gitlab.com/gitlab-org/terraform-images/-/raw/${GITLAB_TERRAFORM
 ENV PATH=$VIRTUAL_ENV/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 RUN helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
-WORKDIR /root/
+
+RUN adduser deploy
+USER deploy
+WORKDIR /home/deploy
 CMD ["/bin/bash"]
