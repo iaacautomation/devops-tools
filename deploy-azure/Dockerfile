@@ -11,9 +11,9 @@ LABEL org.opencontainers.image.description "Docker Image with terraform ans azur
 LABEL org.opencontainers.image.base.name "mcr.microsoft.com/azure-cli"
 LABEL org.opencontainers.image.revision v2.5.4
 LABEL build.date 20230810(YYYYMMDDhhmm))
-ARG TERRAFORM_VERSION=1.5.5
+ARG TERRAFORM_VERSION=1.5.7
 ENV DEBIAN_FRONTEND=noninteractive
-ARG GITLAB_TERRAFORM_VERSION=v1.4.0
+ARG GITLAB_TERRAFORM_VERSION=v1.5.0
 ARG TARGETARCH
 
 ### Install idn2 for azure

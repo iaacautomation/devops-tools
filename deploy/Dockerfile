@@ -23,10 +23,10 @@ LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.5.5
 LABEL build.date 20230810(YYYYMMDD))
-ARG TERRAFORM_VERSION=1.5.5
+ARG TERRAFORM_VERSION=1.5.7
 ENV DEBIAN_FRONTEND=noninteractive
-ARG HELMFILE_VERSION=0.155.1
-ARG GITLAB_TERRAFORM_VERSION=v1.4.0
+ARG HELMFILE_VERSION=0.157.0
+ARG GITLAB_TERRAFORM_VERSION=v1.5.0
 ARG TARGETARCH
 WORKDIR /tmp
 
