@@ -1,3 +1,19 @@
+## v2.5.7
+
+1. Terraform 1.5.7
+1. ansible 2.15.4
+1. helm 3.12.3
+  1. diff 3.8.1
+  1. git 0.12.0
+  1. s3 0.14.0
+  1. secrets 4.1.1
+1. helmfile 0.157.0
+1. node 18.13.0
+1. ansible-lint 6.20.0
+1. gitlab-terraform v1.5.0
+1. azure-cli 2.53.0
+(tfenv removed)
+
 ## v2.5.5
 
 1. Terraform 1.5.5

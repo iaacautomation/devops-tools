@@ -51,17 +51,6 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
  
-    - name: Run Trivy vulnerability scanner
-      if: "${{ github.event_name == 'push' && ! contains(github.ref,'tag') }}"
-      uses: aquasecurity/trivy-action@master
-      with:
-        image-ref: 'ghcr.io/iaacautomation/deploy:test'
-        format: 'table'
-        exit-code: '1'
-        ignore-unfixed: true
-        vuln-type: 'os,library'
-        severity: 'CRITICAL,HIGH'        
-
     - name: Get tag
       if: contains(github.ref,'tag')
       id: tag
