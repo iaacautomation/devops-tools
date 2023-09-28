@@ -45,7 +45,6 @@ jobs:
         context: deploy-azure
         push: true
         tags: ghcr.io/iaacautomation/deploy-azure:test
-        labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         cache-from: type=gha
         cache-to: type=gha,mode=max
@@ -53,7 +52,7 @@ jobs:
     - name: Get tag
       if: contains(github.ref,'tag')
       id: tag
-      uses: devops-actions/action-get-tag@v1.0.1
+      uses: dawidd6/action-get-tag@v1
       with:
         strip_v: true
 
@@ -100,6 +99,5 @@ jobs:
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy-azure:latest
           ${{ secrets.ECR_REPO_PATH }}/deploy-azure:${{steps.tag.outputs.tag}}
           ${{ secrets.ECR_REPO_PATH }}/deploy-azure:latest
-        labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64 ,linux/arm64
         cache-from: type=gha

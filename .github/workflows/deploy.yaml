@@ -45,7 +45,6 @@ jobs:
         context: deploy
         push: true
         tags: ghcr.io/iaacautomation/deploy:test
-        labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         build-args: DISTRO=${{ vars.BASE_IMAGE }}
         cache-from: type=gha
@@ -54,7 +53,7 @@ jobs:
     - name: Get tag
       if: contains(github.ref,'tag')
       id: tag
-      uses: devops-actions/action-get-tag@v1.0.1
+      uses: dawidd6/action-get-tag@v1
       with:
         strip_v: true
 
@@ -101,7 +100,6 @@ jobs:
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
           ${{ secrets.ECR_REPO_PATH }}/deploy:${{steps.tag.outputs.tag}}
           ${{ secrets.ECR_REPO_PATH }}/deploy:latest
-        labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64 ,linux/arm64
         build-args: DISTRO=${{ vars.BASE_IMAGE }}
         cache-from: type=gha
