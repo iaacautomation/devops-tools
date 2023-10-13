@@ -4,16 +4,6 @@ ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 ARG TARGETARCH
 
-FROM python:3 as build
-ENV VENV_PATH=/opt/packages \
-    PIP_DISABLE_PIP_VERSION_CHECK=on \
-    PIP_DEFAULT_TIMEOUT=100 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1  
-RUN python3 -m venv --copies $VENV_PATH
-ENV PATH="$VENV_PATH/bin:$PATH"
-RUN pip3 install ansible ansible-lint six --no-cache-dir
-
 FROM debian:${DISTRO}
 LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
 LABEL org.opencontainers.image.source "https://github.com/iaacautomation/devops-tools/tree/main/deploy"
@@ -22,7 +12,7 @@ LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/
 LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
 LABEL org.opencontainers.image.revision v2.6.1
-LABEL build.date 20231013(YYYYMMDD))
+LABEL build.date 202310(YYYYMMDD))
 ARG TERRAFORM_VERSION=1.6.1
 ENV DEBIAN_FRONTEND=noninteractive
 ARG HELMFILE_VERSION=0.157.0
@@ -31,7 +21,7 @@ ARG TARGETARCH
 WORKDIR /tmp
 
 ### Install utilities and packages
-RUN apt-get update && apt-get -y dist-upgrade && apt-get install --no-install-recommends -y jq libpython3.11 curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs openssh-client idn2 && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
+RUN apt-get update && apt-get -y dist-upgrade && apt-get install --no-install-recommends -y jq libpython3.11 curl wget git unzip ca-certificates curl gnupg apt-transport-https nodejs openssh-client idn2 ansible ansible-lint && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ## Setup Kubernetes key and repo for kubectl
 RUN curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg && echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
@@ -50,7 +40,6 @@ RUN wget -q -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFOR
 RUN apt-get update && apt-get install -y kubectl helm && apt-get clean && rm -rf /var/lib/apt/lists/* -rf
 
 ENV VIRTUAL_ENV=/opt/packages
-COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
 RUN wget https://gitlab.com/gitlab-org/terraform-images/-/raw/${GITLAB_TERRAFORM_VERSION}/src/bin/gitlab-terraform.sh -O /usr/local/bin/gitlab-terraform && chmod +x /usr/local/bin/gitlab-terraform
 ENV PATH=$VIRTUAL_ENV/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
