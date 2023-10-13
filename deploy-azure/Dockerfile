@@ -9,11 +9,11 @@ LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "Docker Image with terraform ans azure for CI PIpelines"
 LABEL org.opencontainers.image.base.name "mcr.microsoft.com/azure-cli"
-LABEL org.opencontainers.image.revision v2.5.4
-LABEL build.date 20230810(YYYYMMDDhhmm))
-ARG TERRAFORM_VERSION=1.5.7
+LABEL org.opencontainers.image.revision v2.6.1
+LABEL build.date 20231013(YYYYMMDDhhmm))
+ARG TERRAFORM_VERSION=1.6.1
 ENV DEBIAN_FRONTEND=noninteractive
-ARG GITLAB_TERRAFORM_VERSION=v1.5.0
+ARG GITLAB_TERRAFORM_VERSION=v1.6.0
 ARG TARGETARCH
 
 ### Install idn2 for azure

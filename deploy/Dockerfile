@@ -21,12 +21,12 @@ LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "debian:${DISTRO}"
-LABEL org.opencontainers.image.revision v2.5.5
-LABEL build.date 20230810(YYYYMMDD))
-ARG TERRAFORM_VERSION=1.5.7
+LABEL org.opencontainers.image.revision v2.6.1
+LABEL build.date 20231013(YYYYMMDD))
+ARG TERRAFORM_VERSION=1.6.1
 ENV DEBIAN_FRONTEND=noninteractive
 ARG HELMFILE_VERSION=0.157.0
-ARG GITLAB_TERRAFORM_VERSION=v1.5.0
+ARG GITLAB_TERRAFORM_VERSION=v1.6.0
 ARG TARGETARCH
 WORKDIR /tmp
 
