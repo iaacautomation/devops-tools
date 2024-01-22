@@ -1,17 +1,31 @@
+## v2.6.2
+1. OpenTofu 1.6.0
+2. ansible 2.14.13
+3. ansible-lint 6.17.2
+4. helm 3.13.3
+   1. diff 3.9.2
+   2. git 0.12.0
+   3. s3 0.14.0
+   4. secrets 4.1.1
+5. helmfile 0.160.0
+6. node 18.19.0
+7. gitlab-terraform 1.7.1
+8. azure-cli 2.56.0
+
 ## v2.6.1
 
 1. Terraform 1.6.1
-1. ansible 2.14.9
-1. helm 3.13.0
+2. ansible 2.14.9
+3. helm 3.13.0
   1. diff 3.8.1
-  1. git 0.12.0
-  1. s3 0.14.0
-  1. secrets 4.1.1
-1. helmfile 0.157.0
-1. node 18.13.0
-1. ansible-lint 6.17.2
-1. gitlab-terraform v1.6.0
-1. azure-cli 2.53.0
+  2. git 0.12.0
+  3. s3 0.14.0
+  4. secrets 4.1.1
+4. helmfile 0.157.0
+5. node 18.13.0
+6. ansible-lint 6.17.2
+7. gitlab-terraform v1.6.0
+8. azure-cli 2.53.0
 
 ## v2.5.7
 
