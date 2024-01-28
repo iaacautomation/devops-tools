@@ -15,27 +15,27 @@ ARG GITLAB_TERRAFORM_VERSION=v1.7.1
 ARG TARGETARCH
 WORKDIR /tmp
 
+RUN echo $TARGETARCH
 ### Install utilities and packages
-RUN apk add curl wget git curl bash nodejs openssh-client ansible ansible-lint openssl idn2-utils
+RUN apk add curl git curl bash nodejs openssh-client ansible ansible-lint openssl idn2-utils
 
 ## Install Kubectl
-RUN wget "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl" -q -O /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
+RUN curl -L -s -o /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl" && chmod +x /usr/local/bin/kubectl
 
 ## Install Helm
-RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+RUN curl -L -s https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 ## Install helmfile
-RUN wget -q -O helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xfz helmfile.tar.gz  && mv helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile && rm helmfile* -rf
+RUN curl -L -s -o /tmp/helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xfz /tmp/helmfile.tar.gz  && mv /tmp/helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile && rm /tmp/*
 
 ##Install OpenTofu
 RUN echo '@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && apk add opentofu@testing
 
-
 ENV VIRTUAL_ENV=/opt/packages
-RUN wget https://gitlab.com/gitlab-org/terraform-images/-/raw/${GITLAB_TERRAFORM_VERSION}/src/bin/gitlab-terraform.sh -O /usr/local/bin/gitlab-terraform && chmod +x /usr/local/bin/gitlab-terraform  && ln -s /usr/bin/tofu /usr/bin/terraform  
+RUN curl -L -s -o /usr/local/bin/gitlab-terraform https://gitlab.com/gitlab-org/terraform-images/-/raw/${GITLAB_TERRAFORM_VERSION}/src/bin/gitlab-terraform.sh && chmod +x /usr/local/bin/gitlab-terraform  && ln -s /usr/bin/tofu /usr/bin/terraform 
 ENV PATH=$VIRTUAL_ENV/bin:$PATH:/usr/local/tfenv/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 RUN helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
 
-WORKDIR /root/
+WORKDIR /root/ 
 CMD ["/bin/bash"]
