@@ -16,7 +16,7 @@ ARG GITLAB_TERRAFORM_VERSION=v1.7.1
 ARG TARGETARCH
 
 ### Install idn2 for azure
-RUN apk add idn2-utils curl
+RUN apk add idn2-utils curl git
 
 ##Install OpenTofu
 RUN echo '@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && apk add opentofu@testing
