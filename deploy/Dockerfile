@@ -17,7 +17,7 @@ ARG TARGETARCH
 WORKDIR /tmp
 
 ### Install utilities and packages
-RUN apk add curl git curl bash nodejs openssh-client ansible ansible-lint openssl idn2-utils
+RUN apk add curl git curl bash nodejs openssh-client ansible ansible-lint openssl idn2-utils jq
 
 ## Install Kubectl
 RUN curl -L -s -o /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl" && chmod +x /usr/local/bin/kubectl
