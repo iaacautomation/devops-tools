@@ -9,10 +9,10 @@ LABEL org.opencontainers.image.title "CI/CD Tools base"
 LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "alpine:latest"
-LABEL org.opencontainers.image.revision v2.6.2
-LABEL build.date 20240122(YYYYMMDD)
+LABEL org.opencontainers.image.revision v2.6.5
+LABEL build.date 20240213(YYYYMMDD)
 ARG HELMFILE_VERSION=0.161.0
-ARG GITLAB_TERRAFORM_VERSION=v1.7.1
+ARG GITLAB_TOFU_VERSION=0.16.0
 ARG TARGETARCH
 WORKDIR /tmp
 
@@ -31,7 +31,9 @@ RUN curl -L -o /tmp/helmfile.tar.gz https://github.com/helmfile/helmfile/release
 ##Install OpenTofu
 RUN echo '@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && apk add opentofu@testing
 
-RUN curl -L -s -o /usr/local/bin/gitlab-terraform https://gitlab.com/gitlab-org/terraform-images/-/raw/${GITLAB_TERRAFORM_VERSION}/src/bin/gitlab-terraform.sh && chmod +x /usr/local/bin/gitlab-terraform  && ln -s /usr/bin/tofu /usr/bin/terraform 
+## Gitlab Tofu
+RUN curl -L -s -o /usr/local/bin/gitlab-tofu https://gitlab.com/components/opentofu/-/raw/${GITLAB_TOFU_VERSION}/src/gitlab-tofu.sh && chmod +x /usr/local/bin/gitlab-tofu
+
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 RUN helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
 
