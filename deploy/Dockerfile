@@ -11,13 +11,13 @@ LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "alpine:latest"
 LABEL org.opencontainers.image.revision v2.6.5
 LABEL build.date 20240213(YYYYMMDD)
-ARG HELMFILE_VERSION=0.161.0
-ARG GITLAB_TOFU_VERSION=0.16.0
+ARG HELMFILE_VERSION=0.162.0
+ARG GITLAB_TOFU_VERSION=0.17.0
 ARG TARGETARCH
 WORKDIR /tmp
 
 ### Install utilities and packages
-RUN apk add curl git curl bash nodejs openssh-client ansible ansible-lint openssl idn2-utils jq
+RUN apk add curl git curl bash nodejs openssh-client ansible ansible-lint openssl idn2-utils jq py3-boto3 py3-yaml
 
 ## Install Kubectl
 RUN curl -L -s -o /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl" && chmod +x /usr/local/bin/kubectl
