@@ -93,7 +93,6 @@ jobs:
         tags: |
           ghcr.io/iaacautomation/deploy-azure:${{steps.tag.outputs.tag}}
           ghcr.io/iaacautomation/deploy-azure:latest
-          ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy-azure:${{steps.tag.outputs.tag}}
           ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy-azure:latest
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy-azure:${{steps.tag.outputs.tag}}
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy-azure:latest

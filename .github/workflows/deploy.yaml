@@ -94,7 +94,6 @@ jobs:
         tags: |
           ghcr.io/iaacautomation/deploy:${{steps.tag.outputs.tag}}
           ghcr.io/iaacautomation/deploy:latest
-          ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:${{steps.tag.outputs.tag}}
           ${{ secrets.GITLAB_REGISTRY_PATH }}/deploy:latest
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:${{steps.tag.outputs.tag}}
           ${{ secrets.DOCKERHUB_ACCOUNT }}/deploy:latest
