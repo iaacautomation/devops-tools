@@ -16,8 +16,11 @@ ARG GITLAB_TOFU_VERSION=0.17.0
 ARG TARGETARCH
 WORKDIR /tmp
 
+## Add OpenTofu repo
+RUN echo '@community https://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories
+
 ### Install utilities and packages
-RUN apk add curl git curl bash nodejs openssh-client ansible ansible-lint openssl idn2-utils jq py3-boto3 py3-yaml
+RUN apk add curl git bash nodejs openssh-client ansible ansible-lint openssl idn2-utils jq py3-boto3 py3-yaml opentofu@community
 
 ## Install Kubectl
 RUN curl -L -s -o /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl" && chmod +x /usr/local/bin/kubectl
@@ -27,9 +30,6 @@ RUN curl -L -s https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm
 
 ## Install helmfile
 RUN curl -L -o /tmp/helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xfz /tmp/helmfile.tar.gz  && mv /tmp/helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile && rm /tmp/*
-
-##Install OpenTofu
-RUN echo '@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && apk add opentofu@testing
 
 ## Gitlab Tofu
 RUN curl -L -s -o /usr/local/bin/gitlab-tofu https://gitlab.com/components/opentofu/-/raw/${GITLAB_TOFU_VERSION}/src/gitlab-tofu.sh && chmod +x /usr/local/bin/gitlab-tofu

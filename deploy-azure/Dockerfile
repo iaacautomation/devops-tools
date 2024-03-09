@@ -14,11 +14,11 @@ LABEL build.date 20240213(YYYYMMDD)
 ARG GITLAB_TOFU_VERSION=v0.17.0
 ARG TARGETARCH
 
-### Install idn2 for azure
-RUN apk add idn2-utils curl git
+## Add OpenTofu repo
+RUN echo '@community https://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories
 
-##Install OpenTofu
-RUN echo '@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && apk add opentofu@testing
+### Install idn2 for azure
+RUN apk add idn2-utils curl git opentofu@community
 
 ## Gitlab Tofu
 RUN curl -L -s -o /usr/local/bin/gitlab-tofu https://gitlab.com/components/opentofu/-/raw/${GITLAB_TOFU_VERSION}/src/gitlab-tofu.sh && chmod +x /usr/local/bin/gitlab-tofu
