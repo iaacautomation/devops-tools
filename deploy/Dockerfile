@@ -11,8 +11,8 @@ LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name "alpine:latest"
 LABEL org.opencontainers.image.revision v2.6.5
 LABEL build.date 20240213(YYYYMMDD)
-ARG HELMFILE_VERSION=0.162.0
-ARG GITLAB_TOFU_VERSION=0.17.0
+ARG HELMFILE_VERSION=0.167.1
+ARG GITLAB_TOFU_VERSION=0.25.0
 ARG TARGETARCH
 WORKDIR /tmp
 
