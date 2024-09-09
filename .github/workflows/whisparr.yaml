@@ -11,9 +11,6 @@ jobs:
   release:
     name: Build and Release Deploy Image
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
     permissions:
       id-token: write
       packages: write

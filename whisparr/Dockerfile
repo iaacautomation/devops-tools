@@ -3,12 +3,11 @@ FROM debian:trixie-slim
 ARG TARGETPLATFORM
 ARG CHANNEL
 
-ENV \
-    COMPlus_EnableDiagnostics="0" \
-    WHISPARR__UPDATE__BRANCH="${CHANNEL}"
-
-ENV UMASK="0002" \
-    TZ="Etc/UTC"
+ENV COMPlus_EnableDiagnostics="0" \
+    WHISPARR__UPDATE__BRANCH="${CHANNEL}" \
+    UMASK="0002" \
+    TZ="Etc/UTC" \
+    DEBIAN_FRONTEND=noninteractive
 
 USER root
 WORKDIR /app
