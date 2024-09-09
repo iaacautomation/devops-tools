@@ -35,7 +35,7 @@ RUN apt-get update && \
     && \
     rm -rf /app/bin/Whisparr.Update \
     && \
-    printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[onedr0p](https://github.com/onedr0p)\n" "${WHISPARR__UPDATE__BRANCH}" "${VERSION}" > /app/package_info \
+    printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[iaacautomation](https://github.com/iaacautomation)\n" "${WHISPARR__UPDATE__BRANCH}"> /app/package_info \
     && chown -R root:root /app \
     && chmod -R 755 /app \
     && rm -rf /tmp/*
