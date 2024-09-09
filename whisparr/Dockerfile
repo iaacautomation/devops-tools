@@ -1,8 +1,6 @@
-ARG VERSION
 FROM debian:trixie-slim
 
 ARG TARGETPLATFORM
-ARG VERSION
 ARG CHANNEL
 
 ENV \
@@ -15,7 +13,6 @@ ENV UMASK="0002" \
 USER root
 WORKDIR /app
 
-#hadolint ignore=DL3018,DL3059
 RUN apt-get update && \
     apt-get -y install \
         bash \
