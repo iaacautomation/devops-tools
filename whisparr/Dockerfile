@@ -43,7 +43,7 @@ RUN apt-get update && \
     && chmod -R 755 /app \
     && rm -rf /tmp/*
 
-COPY ./apps/whisparr/entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 
 USER nobody:nogroup
 WORKDIR /config
