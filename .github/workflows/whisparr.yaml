@@ -16,8 +16,6 @@ jobs:
         shell: bash
     permissions:
       id-token: write
-      contents: write
-      pull-requests: write
       packages: write
     steps:
     - name: Checkout
@@ -41,7 +39,6 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Build and Push images
-      if: contains(github.ref,'tag')
       uses: docker/build-push-action@v5
       with:
         context: deploy
