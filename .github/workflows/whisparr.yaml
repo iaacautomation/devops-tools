@@ -41,7 +41,7 @@ jobs:
     - name: Build and Push images
       uses: docker/build-push-action@v5
       with:
-        context: deploy
+        context: whisparr
         push: true
         tags: ghcr.io/iaacautomation/whisparr:latest
         platforms: linux/amd64 ,linux/arm64
