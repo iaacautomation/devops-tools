@@ -1,8 +1,8 @@
-FROM --platform=$BUILDPLATFORM golang:alpine AS build
+FROM --platform=$BUILDPLATFORM public.ecr.aws/docker/library/golang:alpine AS build
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
-FROM alpine:latest
+FROM public.ecr.aws/docker/library/alpine:latest
 LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
 LABEL org.opencontainers.image.source "https://github.com/iaacautomation/devops-tools/tree/main/deploy"
 LABEL org.opencontainers.image.title "CI/CD Tools base"

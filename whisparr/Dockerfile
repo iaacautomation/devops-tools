@@ -1,4 +1,4 @@
-FROM debian:trixie-slim
+FROM public.ecr.aws/docker/library/debian:trixie-slim
 
 ARG TARGETPLATFORM
 ARG CHANNEL

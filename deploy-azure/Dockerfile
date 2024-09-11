@@ -1,7 +1,3 @@
-FROM --platform=$BUILDPLATFORM golang:alpine
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
-
 FROM mcr.microsoft.com/azure-cli
 LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
 LABEL org.opencontainers.image.source "https://github.com/iaacautomation/devops-tools/tree/main/deploy-azure"
