@@ -1,6 +1,8 @@
 name: Build and Release Deploy Image
 on:
   push:
+    branches:
+      - 'master'
     paths:
       - 'megacmd/**'
       - '.github/workflows/megacmd.yaml'
