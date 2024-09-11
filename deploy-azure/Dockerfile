@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.description "Docker Image with terraform ans azur
 LABEL org.opencontainers.image.base.name "mcr.microsoft.com/azure-cli"
 LABEL org.opencontainers.image.revision v2.6.5
 LABEL build.date 20240213(YYYYMMDD)
-ARG GITLAB_TOFU_VERSION=0.25.0
+ARG GITLAB_TOFU_VERSION=0.27.0
 
 ## Add OpenTofu repo
 RUN echo '@community https://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories
