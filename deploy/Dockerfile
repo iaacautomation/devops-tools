@@ -3,13 +3,13 @@ ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
 FROM public.ecr.aws/docker/library/alpine:latest
-LABEL org.opencontainers.image.authors "Manpreet Singh Nehra"
-LABEL org.opencontainers.image.source "https://github.com/iaacautomation/devops-tools/tree/main/deploy"
-LABEL org.opencontainers.image.title "CI/CD Tools base"
-LABEL org.opencontainers.image.documentation "https://github.com/iaacautomation/devops-tools"
-LABEL org.opencontainers.image.description "CI Tools Image for CI PIpelines"
-LABEL org.opencontainers.image.base.name "alpine:latest"
-LABEL org.opencontainers.image.revision v2.6.5
+LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
+LABEL org.opencontainers.image.source="https://github.com/iaacautomation/devops-tools/tree/main/deploy"
+LABEL org.opencontainers.image.title="CI/CD Tools base"
+LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/devops-tools"
+LABEL org.opencontainers.image.description="CI Tools Image for CI PIpelines"
+LABEL org.opencontainers.image.base.name="alpine:latest"
+LABEL org.opencontainers.image.revision v3.0.0
 LABEL build.date 20240213(YYYYMMDD)
 ARG HELMFILE_VERSION=0.167.1
 ARG GITLAB_TOFU_VERSION=0.27.0
