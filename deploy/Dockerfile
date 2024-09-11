@@ -9,8 +9,8 @@ LABEL org.opencontainers.image.title="CI/CD Tools base"
 LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description="CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name="alpine:latest"
-LABEL org.opencontainers.image.revision v3.0.0
-LABEL build.date 20240213(YYYYMMDD)
+LABEL org.opencontainers.image.revision v4.0.2
+LABEL build.date=20240924(YYYYMMDD)
 ARG HELMFILE_VERSION=0.167.1
 ARG GITLAB_TOFU_VERSION=0.27.0
 ARG TARGETARCH

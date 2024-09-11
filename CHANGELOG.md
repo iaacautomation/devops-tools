@@ -1,3 +1,17 @@
+## v4.0.2
+1. OpenTofu 1.8.2
+2. ansible 2.17.0
+3. ansible-lint 24.5.0
+4. helm 3.15.4
+   1. diff 3.9.9
+   2. git 0.12.0
+   3. s3 0.14.0
+   4. secrets 4.1.1
+5. helmfile 0.167.1
+6. node 20.15.1
+7. gitlab-tofu 0.27.0
+8. azure-cli 2.64.0
+
 ## v4.0.0
 1. OpenTofu 1.8.1
 2. ansible 2.17.0
