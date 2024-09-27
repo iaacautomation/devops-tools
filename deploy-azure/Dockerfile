@@ -9,6 +9,9 @@ LABEL org.opencontainers.image.revision v4.0.2
 LABEL build.date 20240924(YYYYMMDD)
 ARG GITLAB_TOFU_VERSION=0.27.0
 
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get -y install idn2 jq && apt-get clean && rm -rf /var/lib/apt/lists/*
 ## Add OpenTofu repo
 RUN curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh  && \
     chmod +x install-opentofu.sh && \
