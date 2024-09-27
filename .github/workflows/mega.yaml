@@ -44,5 +44,5 @@ jobs:
         context: megacmd
         push: true
         tags: ghcr.io/iaacautomation/megacmd:latest
-        platforms: linux/amd64 ,linux/arm64
+        platforms: linux/amd64
         build-args: CHANNEL=nightly
