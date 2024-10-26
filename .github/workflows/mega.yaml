@@ -1,11 +1,9 @@
 name: Mega Docker Image
 on:
   push:
-    branches:
-      - 'master'
     paths:
       - 'megacmd/**'
-      - '.github/workflows/megacmd.yaml'
+      - '.github/workflows/mega.yaml'
   schedule:
       - cron: '0 0 * * 0'
 

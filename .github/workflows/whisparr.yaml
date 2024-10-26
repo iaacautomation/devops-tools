@@ -1,8 +1,6 @@
 name: Whisparr Docker Image
 on:
   push:
-    branches:
-      - 'master'
     paths:
       - 'whisparr/**'
       - '.github/workflows/whisparr.yaml'
