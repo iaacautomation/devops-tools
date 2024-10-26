@@ -1,4 +1,4 @@
-name: Build and Release Deploy Image
+name: Deploy Image with AWS
 on:
   push:
     paths:

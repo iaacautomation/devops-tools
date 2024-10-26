@@ -1,4 +1,4 @@
-name: Build and Release Deploy Azure Image
+name: Azure Deploy Docker Image
 on:
   push:
     paths:

@@ -5,9 +5,9 @@ LABEL org.opencontainers.image.title="CI/CD Tools base"
 LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description="Docker Image with terraform ans azure for CI PIpelines"
 LABEL org.opencontainers.image.base.name "public.ecr.aws/docker/library/python:3.10-bookworm"
-LABEL org.opencontainers.image.revision v4.0.2
-LABEL build.date 20240924(YYYYMMDD)
-ARG GITLAB_TOFU_VERSION=0.27.0
+LABEL org.opencontainers.image.revision v4.0.4
+LABEL build.date 20241126(YYYYMMDD)
+ARG GITLAB_TOFU_VERSION=0.41.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 
