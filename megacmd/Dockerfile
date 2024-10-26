@@ -11,3 +11,4 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     apt-get autoclean -y
     
+ENTRYPOINT ["mega-cmd-server"]    
