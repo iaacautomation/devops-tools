@@ -1,4 +1,4 @@
-name: Build and Release Deploy Image
+name: Mega Docker Image
 on:
   push:
     branches:
