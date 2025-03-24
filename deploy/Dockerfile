@@ -20,7 +20,7 @@ WORKDIR /tmp
 RUN echo '@community https://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories
 
 ### Install utilities and packages
-RUN apk add curl git bash nodejs openssh-client ansible ansible-lint openssl idn2-utils jq py3-boto3 py3-yaml opentofu@community
+RUN apk add curl git bash nodejs openssh-client ansible ansible-lint openssl idn2-utils jq py3-boto3 py3-yaml opentofu@community py3-kubernetes
 
 ## Install Kubectl
 RUN curl -L -s -o /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl" && chmod +x /usr/local/bin/kubectl
