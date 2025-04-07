@@ -12,7 +12,6 @@ jobs:
     name: Build and Release Deploy Image
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: write
       packages: write
     steps:

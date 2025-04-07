@@ -1,9 +1,9 @@
-name: Whisparr Docker Image
+name: codeserver Docker Image
 on:
   push:
     paths:
-      - 'whisparr/**'
-      - '.github/workflows/whisparr.yaml'
+      - 'codeserver/**'
+      - '.github/workflows/codeserver.yaml'
   schedule:
       - cron: '0 0 * * 0'
 
@@ -38,8 +38,8 @@ jobs:
     - name: Build and Push images
       uses: docker/build-push-action@v5
       with:
-        context: whisparr
+        context: codeserver
         push: true
-        tags: ghcr.io/iaacautomation/whisparr:latest
+        tags: ghcr.io/iaacautomation/codeserver:latest
         platforms: linux/amd64
         build-args: CHANNEL=nightly

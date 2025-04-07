@@ -10,8 +10,8 @@ LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/
 LABEL org.opencontainers.image.description="CI Tools Image for CI PIpelines"
 LABEL org.opencontainers.image.base.name="alpine:latest"
 LABEL org.opencontainers.image.revision=v4.0.4
-LABEL build.date=202503255(YYYYMMDD)
-ARG HELMFILE_VERSION=0.170.0
+LABEL build.date=20250407(YYYYMMDD)
+ARG HELMFILE_VERSION=0.171.0
 ARG GITLAB_TOFU_VERSION=1.1.0
 ARG TARGETARCH
 WORKDIR /tmp
