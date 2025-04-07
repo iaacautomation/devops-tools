@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN sudo apt-get update && \
     sudo apt-get -y purge nano && \
-    sudo apt-get -y install idn2 jq ca-certificates apt-transport-https gnupg vim unzip python3-full python3-venv && \
+    sudo apt-get -y install idn2 jq ca-certificates apt-transport-https gnupg vim unzip python3-full python3-pip virtualenv && \
     sudo apt-get clean && \
     sudo rm -rf /var/lib/apt/lists/*
 
