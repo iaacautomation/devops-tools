@@ -11,12 +11,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN sudo apt-get update && \
     sudo apt-get -y purge nano && \
-    sudo apt-get -y install idn2 jq ca-certificates apt-transport-https gnupg vim unzip && \
+    sudo apt-get -y install idn2 jq ca-certificates apt-transport-https gnupg vim unzip python3 && \
     sudo apt-get clean && \
     sudo rm -rf /var/lib/apt/lists/*
 
-RUN sudo wget --quiet -O /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
-    sudo chmod +x /usr/local/bin/kubectl
+RUN sudo wget --quiet -O /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
@@ -32,9 +31,11 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/s
 RUN wget --quiet https://github.com/opentofu/opentofu/releases/download/v${TOFU_VERSION}/tofu_${TOFU_VERSION}_amd64.deb && \
     sudo dpkg -i tofu_${TOFU_VERSION}_amd64.deb && rm tofu*.deb
 
-RUN sudo wget --quiet -O /usr/local/bin/tfsec https://github.com/aquasecurity/tfsec/releases/download/v1.28.13/tfsec-linux-amd64
-
 RUN curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" &&\ 
     unzip awscliv2.zip && \
     sudo ./aws/install && \
     rm aws* -rf
+
+RUN sudo wget --quiet -O /usr/local/bin/tfsec https://github.com/aquasecurity/tfsec/releases/download/v1.28.13/tfsec-linux-amd64 && \
+    sudo chmod +x /usr/local/bin/*
+
