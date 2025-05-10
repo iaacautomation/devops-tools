@@ -46,6 +46,12 @@ jobs:
         username: ${{ secrets.DOCKERHUB_ACCOUNT }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+    - name: Get latest Runner Version
+      id: versions
+      run: |
+        echo runner=`curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'|cut -b 1`
+        echo container_hooks=`curl --silent "https://api.github.com/repos/actions/runner-container-hooks/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'|cut -b 1`
+
     - name: Test Build for deploy
       if: "${{ github.event_name == 'push' && ! contains(github.ref,'tag') }}"
       uses: docker/build-push-action@v5
@@ -54,7 +60,9 @@ jobs:
         push: true
         tags: ghcr.io/iaacautomation/deploy:test
         platforms: linux/amd64,linux/arm64
-        build-args: DISTRO=${{ vars.BASE_IMAGE }}
+        build-args: |
+          RUNNER_VERSION=${{ steps.versions.outputs.runner }}
+          RUNNER_CONTAINER_HOOKS_VERSION=${{ steps.versions.outputs.container_hooks }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
  
