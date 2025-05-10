@@ -38,7 +38,7 @@ RUN export RUNNER_ARCH=${TARGETARCH} \
     && tar zxvf docker.tgz \
     && rm -rf docker.tgz \
     && mkdir -p /usr/local/lib/docker/cli-plugins \
-    && curl -fLo /usr/local/lib/docker/cli-plugins/docker-buildx \
+    && curl -sfLo /usr/local/lib/docker/cli-plugins/docker-buildx \
         "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}" \
     && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
 
@@ -67,16 +67,16 @@ RUN curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opent
     && rm -f install-opentofu.sh
 
 ## Install Kubectl
-RUN curl -L -s -o /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl" && chmod +x /usr/local/bin/kubectl
+RUN curl -sfLo /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl" && chmod +x /usr/local/bin/kubectl
 
 ## Install Helm
-RUN curl -L -s https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+RUN curl -sfLo https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 ## Install helmfile
-RUN curl -L -o /tmp/helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xfz /tmp/helmfile.tar.gz  && mv /tmp/helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile && rm /tmp/*
+RUN curl -sfLo /tmp/helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xfz /tmp/helmfile.tar.gz  && mv /tmp/helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile && rm /tmp/*
 
 ## Gitlab Tofu
-RUN curl -L -s -o /usr/local/bin/gitlab-tofu https://gitlab.com/components/opentofu/-/raw/${GITLAB_TOFU_VERSION}/src/gitlab-tofu.sh && chmod +x /usr/local/bin/gitlab-tofu
+RUN curl -sfLo /usr/local/bin/gitlab-tofu https://gitlab.com/components/opentofu/-/raw/${GITLAB_TOFU_VERSION}/src/gitlab-tofu.sh && chmod +x /usr/local/bin/gitlab-tofu
 
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 RUN helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
