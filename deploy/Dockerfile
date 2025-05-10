@@ -6,6 +6,16 @@ ARG RUNNER_VERSION
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.6.1
 ARG DOCKER_VERSION=28.0.1
 ARG BUILDX_VERSION=0.21.2
+LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
+LABEL org.opencontainers.image.source="https://github.com/iaacautomation/devops-tools/tree/main/deploy"
+LABEL org.opencontainers.image.title="CI/CD Tools base"
+LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/devops-tools"
+LABEL org.opencontainers.image.description="CI Tools Image for CI PIpelines"
+LABEL org.opencontainers.image.base.name="alpine:latest"
+LABEL org.opencontainers.image.revision=v4.0.4
+LABEL build.date=20250407(YYYYMMDD)
+ARG HELMFILE_VERSION=0.171.0
+ARG GITLAB_TOFU_VERSION=1.1.0
 
 RUN apt update -y && apt install curl unzip -y
 
@@ -13,7 +23,7 @@ WORKDIR /actions-runner
 
 RUN export RUNNER_ARCH=${TARGETARCH} \
     && if [ "$RUNNER_ARCH" = "amd64" ]; then export RUNNER_ARCH=x64 ; fi \
-    && curl -f -L -o runner.tar.gz https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${RUNNER_ARCH}-${RUNNER_VERSION}.tar.gz \
+    && curl -v -f -L -o runner.tar.gz https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${RUNNER_ARCH}-${RUNNER_VERSION}.tar.gz \
     && tar xzf ./runner.tar.gz \
     && rm runner.tar.gz
 
