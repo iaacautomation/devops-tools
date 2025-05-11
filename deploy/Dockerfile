@@ -1,23 +1,15 @@
-# Source: https://github.com/dotnet/dotnet-docker
 FROM mcr.microsoft.com/dotnet/runtime-deps:9.0 AS build
 
 ARG TARGETARCH
 ARG RUNNER_VERSION
-ARG RUNNER_CONTAINER_HOOKS_VERSION=0.6.1
+ARG RUNNER_CONTAINER_HOOKS_VERSION
 ARG DOCKER_VERSION=28.0.1
 ARG BUILDX_VERSION=0.21.2
-LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
-LABEL org.opencontainers.image.source="https://github.com/iaacautomation/devops-tools/tree/main/deploy"
-LABEL org.opencontainers.image.title="CI/CD Tools base"
-LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/devops-tools"
-LABEL org.opencontainers.image.description="CI Tools Image for CI PIpelines"
-LABEL org.opencontainers.image.base.name="alpine:latest"
-LABEL org.opencontainers.image.revision=v4.0.4
-LABEL build.date=20250407(YYYYMMDD)
-ARG HELMFILE_VERSION=0.171.0
-ARG GITLAB_TOFU_VERSION=1.1.0
-
 RUN apt update -y && apt install curl unzip -y
+ARG HELMFILE_VERSION
+ARG KUBECTL_VERSION
+ARG HELM_VERSION
+ENV GITLAB_TOFU_VERSION=1.1.0
 
 WORKDIR /actions-runner
 
@@ -27,20 +19,32 @@ RUN export RUNNER_ARCH=${TARGETARCH} \
     && tar xzf ./runner.tar.gz \
     && rm runner.tar.gz
 
-RUN curl -f -L -o runner-container-hooks.zip https://github.com/actions/runner-container-hooks/releases/download/v${RUNNER_CONTAINER_HOOKS_VERSION}/actions-runner-hooks-k8s-${RUNNER_CONTAINER_HOOKS_VERSION}.zip \
+RUN curl -sfLo runner-container-hooks.zip https://github.com/actions/runner-container-hooks/releases/download/v${RUNNER_CONTAINER_HOOKS_VERSION}/actions-runner-hooks-k8s-${RUNNER_CONTAINER_HOOKS_VERSION}.zip \
     && unzip ./runner-container-hooks.zip -d ./k8s \
     && rm runner-container-hooks.zip
 
 RUN export RUNNER_ARCH=${TARGETARCH} \
     && if [ "$RUNNER_ARCH" = "amd64" ]; then export DOCKER_ARCH=x86_64 ; fi \
-    && if [ "$RUNNER_ARCH" == "arm64" ]; then export DOCKER_ARCH=aarch64 ; fi \
+    && if [ "$RUNNER_ARCH" = "arm64" ]; then export DOCKER_ARCH=aarch64 ; fi \
     && curl -fsLo docker.tgz https://download.docker.com/linux/static/stable/${DOCKER_ARCH}/docker-${DOCKER_VERSION}.tgz \
-    && tar zxvf docker.tgz \
+    && tar zxf docker.tgz \
     && rm -rf docker.tgz \
     && mkdir -p /usr/local/lib/docker/cli-plugins \
     && curl -sfLo /usr/local/lib/docker/cli-plugins/docker-buildx \
         "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}" \
     && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
+
+WORKDIR /tools
+
+## Download Tools
+RUN curl -sLo kubectl "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl" \
+    && curl -sfLo gitlab-tofu https://gitlab.com/components/opentofu/-/raw/${GITLAB_TOFU_VERSION}/src/gitlab-tofu.sh \
+    && curl -sfLo helm.tar.gz https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz \
+    && tar xfz helm.tar.gz && cp linux-amd64/helm /tools/ \
+    && curl -sfLo helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  \
+    && tar xfz helmfile.tar.gz \
+    && chmod +x /tools/* \
+    && rm *.tar.gz linux-amd64 -rf
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:9.0
 
@@ -48,8 +52,15 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
 ENV ImageOS=debian
+LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
+LABEL org.opencontainers.image.source="https://github.com/iaacautomation/devops-tools/tree/main/deploy"
+LABEL org.opencontainers.image.title="CI/CD Tools base"
+LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/devops-tools"
+LABEL org.opencontainers.image.description="CI Tools Image for CI PIpelines"
+LABEL org.opencontainers.image.base.name="alpine:latest"
+LABEL org.opencontainers.image.revision=v4.0.4
+LABEL build.date=20250407(YYYYMMDD)
 
-# 'gpg-agent' and 'software-properties-common' are needed for the 'add-apt-repository' command that follows
 RUN apt update -y \
     && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common curl jq unzip git \
     && rm -rf /var/lib/apt/lists/*
@@ -66,20 +77,10 @@ RUN curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opent
     && ./install-opentofu.sh --install-method standalone \
     && rm -f install-opentofu.sh
 
-## Install Kubectl
-RUN curl -sfLo /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl" && chmod +x /usr/local/bin/kubectl
-
-## Install Helm
-RUN curl -sfLo https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
-## Install helmfile
-RUN curl -sfLo /tmp/helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  && tar xfz /tmp/helmfile.tar.gz  && mv /tmp/helmfile /usr/local/bin/ && chmod +x /usr/local/bin/helmfile && rm /tmp/*
-
-## Gitlab Tofu
-RUN curl -sfLo /usr/local/bin/gitlab-tofu https://gitlab.com/components/opentofu/-/raw/${GITLAB_TOFU_VERSION}/src/gitlab-tofu.sh && chmod +x /usr/local/bin/gitlab-tofu
+COPY --from=build /tools/* /usr/local/bin/
 
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
-RUN helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
+RUN /usr/local/bin/helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
 
 WORKDIR /home/runner
 
