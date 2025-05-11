@@ -42,9 +42,13 @@ RUN curl -sfLo gitlab-tofu https://gitlab.com/components/opentofu/-/raw/${GITLAB
 RUN curl -sfLo helm.tar.gz https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 RUN tar xfz helm.tar.gz && cp linux-amd64/helm /tools/
 RUN curl -sfLo helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz
+RUN curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh \
+    && chmod +x install-opentofu.sh \
+    && ./install-opentofu.sh --install-method standalone \
+    && rm -f install-opentofu.sh
 RUN tar xfz helmfile.tar.gz
+RUN rm /tools/*.tar.gz /tools/linux-amd64 /tools/README* /tools/LICENSE -rf
 RUN chmod +x /tools/*
-RUN rm /tools/*.tar.gz /tools/linux-amd64 -rf
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:9.0
 
@@ -72,13 +76,8 @@ RUN adduser --disabled-password --gecos "" --uid 1001 runner \
     && echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers \
     && echo "Defaults env_keep += \"DEBIAN_FRONTEND\"" >> /etc/sudoers
 
-RUN curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh \
-    && chmod +x install-opentofu.sh \
-    && ./install-opentofu.sh --install-method standalone \
-    && rm -f install-opentofu.sh
-
 COPY --from=build /tools/* /usr/local/bin/
-
+COPY --from=build /opt/opentofu/tofu /usr/local/bin
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 RUN /usr/local/bin/helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
 
