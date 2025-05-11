@@ -44,7 +44,7 @@ RUN tar xfz helm.tar.gz && cp linux-amd64/helm /tools/
 RUN curl -sfLo helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz
 RUN curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh \
     && chmod +x install-opentofu.sh \
-    && ./install-opentofu.sh --install-method standalone \
+    && ./install-opentofu.sh --install-method -skip-verify standalone \
     && rm -f install-opentofu.sh
 RUN tar xfz helmfile.tar.gz
 RUN rm /tools/*.tar.gz /tools/linux-amd64 /tools/README* /tools/LICENSE -rf
