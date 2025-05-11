@@ -53,7 +53,7 @@ jobs:
         echo container_hooks=`curl --silent "https://api.github.com/repos/actions/runner-container-hooks/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'|cut -b 2-` >> $GITHUB_OUTPUT
         echo helmfile=`curl --silent "https://api.github.com/repos/helmfile/helmfile/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'|cut -b 2-` >> $GITHUB_OUTPUT
         echo kubectl=`curl -L -s https://dl.k8s.io/release/stable.txt`
-        echo helm=`curl --silent "https://api.github.com/repos/helmfile/helmfile/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'` >> $GITHUB_OUTPUT
+        echo helm=`curl --silent "https://api.github.com/repos/helm/helm/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'` >> $GITHUB_OUTPUT
 
     - name: Test Build for deploy
       if: "${{ github.event_name == 'push' && ! contains(github.ref,'tag') }}"
