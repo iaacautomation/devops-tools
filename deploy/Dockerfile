@@ -37,14 +37,14 @@ RUN export RUNNER_ARCH=${TARGETARCH} \
 WORKDIR /tools
 
 ## Download Tools
-RUN curl -sLo kubectl "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl" \
-    && curl -sfLo gitlab-tofu https://gitlab.com/components/opentofu/-/raw/${GITLAB_TOFU_VERSION}/src/gitlab-tofu.sh \
-    && curl -sfLo helm.tar.gz https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz \
-    && tar xfz helm.tar.gz && cp linux-amd64/helm /tools/ \
-    && curl -sfLo helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz  \
-    && tar xfz helmfile.tar.gz \
-    && chmod +x /tools/* \
-    && rm *.tar.gz linux-amd64 -rf
+RUN curl -sLo kubectl "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl"
+RUN curl -sfLo gitlab-tofu https://gitlab.com/components/opentofu/-/raw/${GITLAB_TOFU_VERSION}/src/gitlab-tofu.sh
+RUN curl -sfLo helm.tar.gz https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
+RUN tar xfz helm.tar.gz && cp linux-amd64/helm /tools/
+RUN curl -sfLo helmfile.tar.gz https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_${TARGETARCH}.tar.gz
+RUN tar xfz helmfile.tar.gz
+RUN chmod +x /tools/*
+RUN rm /tools/*.tar.gz /tools/linux-amd64 -rf
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:9.0
 
