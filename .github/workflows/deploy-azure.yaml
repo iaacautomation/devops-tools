@@ -45,6 +45,10 @@ jobs:
         username: ${{ secrets.DOCKERHUB_ACCOUNT }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+    - name: Get latest Runner Version
+      id: versions
+      run: echo gitlab_tofu==`curl -s https://gitlab.com/api/v4/projects/53866919/releases/ | jq '.[]' | jq -r '.name' | head -1`        
+
     - name: Test Build for deploy-azure
       if: "${{ github.event_name == 'push' && ! contains(github.ref,'tag') }}"
       uses: docker/build-push-action@v5
@@ -55,7 +59,8 @@ jobs:
         platforms: linux/amd64,linux/arm64
         cache-from: type=gha
         cache-to: type=gha,mode=max
- 
+        build-args: GITALB_TOFU_VERSION=${{ steps.versions.outputs.gitlab_tofu }}
+
     - name: Get tag
       if: contains(github.ref,'tag')
       id: tag
@@ -100,3 +105,4 @@ jobs:
           ${{ secrets.ECR_REPO_PATH }}/deploy-azure:latest
         platforms: linux/amd64 ,linux/arm64
         cache-from: type=gha
+        build-args: GITALB_TOFU_VERSION=${{ steps.versions.outputs.gitlab_tofu }}

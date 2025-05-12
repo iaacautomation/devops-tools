@@ -9,7 +9,7 @@ RUN apt update -y && apt install curl unzip -y
 ARG HELMFILE_VERSION
 ARG KUBECTL_VERSION
 ARG HELM_VERSION
-ENV GITLAB_TOFU_VERSION=1.1.0
+ARG GITLAB_TOFU_VERSION
 
 WORKDIR /actions-runner
 
@@ -66,7 +66,7 @@ LABEL org.opencontainers.image.revision=v4.0.4
 LABEL build.date=20250407(YYYYMMDD)
 
 RUN apt update -y \
-    && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common curl jq unzip git \
+    && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common curl jq unzip git openssh-client ansible-lint ansible nodejs bash python3-yaml python3-kubernetes \
     && rm -rf /var/lib/apt/lists/*
 
 RUN adduser --disabled-password --gecos "" --uid 1001 runner \

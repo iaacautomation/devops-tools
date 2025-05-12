@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.description="Docker Image with terraform ans azur
 LABEL org.opencontainers.image.base.name="public.ecr.aws/docker/library/python:3.10-bookworm"
 LABEL org.opencontainers.image.revision=v4.0.4
 LABEL build.date=20250407(YYYYMMDD)
-ARG GITLAB_TOFU_VERSION=1.1.0
+ARG GITLAB_TOFU_VERSION
 
 ENV DEBIAN_FRONTEND=noninteractive
 
