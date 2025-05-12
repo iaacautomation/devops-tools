@@ -70,7 +70,7 @@ jobs:
           HELMFILE_VERSION=${{ steps.versions.outputs.helmfile }}
           KUBECTL_VERSION=${{ steps.versions.outputs.kubectl }}
           HELM_VERSION=${{ steps.versions.outputs.helm }}
-          GITALB_TOFU_VERSION=${{ steps.versions.outputs.gitlab_tofu }}
+          GITLAB_TOFU_VERSION=${{ steps.versions.outputs.gitlab_tofu }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
  
@@ -123,5 +123,5 @@ jobs:
           HELMFILE_VERSION=${{ steps.versions.outputs.helmfile }}
           KUBECTL_VERSION=${{ steps.versions.outputs.kubectl }}
           HELM_VERSION=${{ steps.versions.outputs.helm }}
-          GITALB_TOFU_VERSION=${{ steps.versions.outputs.gitlab_tofu }}
+          GITLAB_TOFU_VERSION=${{ steps.versions.outputs.gitlab_tofu }}
         cache-from: type=gha

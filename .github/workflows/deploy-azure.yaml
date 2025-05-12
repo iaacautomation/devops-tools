@@ -59,7 +59,7 @@ jobs:
         platforms: linux/amd64,linux/arm64
         cache-from: type=gha
         cache-to: type=gha,mode=max
-        build-args: GITALB_TOFU_VERSION=${{ steps.versions.outputs.gitlab_tofu }}
+        build-args: GITLAB_TOFU_VERSION=${{ steps.versions.outputs.gitlab_tofu }}
 
     - name: Get tag
       if: contains(github.ref,'tag')
@@ -105,4 +105,4 @@ jobs:
           ${{ secrets.ECR_REPO_PATH }}/deploy-azure:latest
         platforms: linux/amd64 ,linux/arm64
         cache-from: type=gha
-        build-args: GITALB_TOFU_VERSION=${{ steps.versions.outputs.gitlab_tofu }}
+        build-args: GITLAB_TOFU_VERSION=${{ steps.versions.outputs.gitlab_tofu }}
