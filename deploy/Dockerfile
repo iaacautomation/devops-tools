@@ -56,14 +56,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
 ENV ImageOS=debian
+ARG TAG
 LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
 LABEL org.opencontainers.image.source="https://github.com/iaacautomation/devops-tools/tree/main/deploy"
 LABEL org.opencontainers.image.title="CI/CD Tools base"
 LABEL org.opencontainers.image.documentation="https://github.com/iaacautomation/devops-tools"
 LABEL org.opencontainers.image.description="CI Tools Image for CI PIpelines"
-LABEL org.opencontainers.image.base.name="alpine:latest"
-LABEL org.opencontainers.image.revision=v4.0.4
-LABEL build.date=20250407(YYYYMMDD)
+LABEL org.opencontainers.image.base.name="mcr.microsoft.com/dotnet/runtime-deps:9.0"
+LABEL org.opencontainers.image.revision=$TAG
 
 RUN apt update -y \
     && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common curl jq unzip git openssh-client ansible-lint ansible nodejs bash python3-yaml python3-kubernetes \
