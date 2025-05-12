@@ -49,12 +49,12 @@ jobs:
     - name: Get latest Runner Version
       id: versions
       run: |
-        echo runner=${curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'|cut -b 2-}} >> $GITHUB_OUTPUT
+        echo runner=${curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'|cut -b 2-} >> $GITHUB_OUTPUT
         echo container_hooks=${curl --silent "https://api.github.com/repos/actions/runner-container-hooks/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'|cut -b 2-} >> $GITHUB_OUTPUT
         echo helmfile=${curl --silent "https://api.github.com/repos/helmfile/helmfile/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'|cut -b 2-} >> $GITHUB_OUTPUT
         echo kubectl=${curl -L -s https://dl.k8s.io/release/stable.txt} >> $GITHUB_OUTPUT
-        echo helm=`curl --silent "https://api.github.com/repos/helm/helm/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'` >> $GITHUB_OUTPUT
-        echo gitlab_tofu==${curl -s https://gitlab.com/api/v4/projects/53866919/releases/ | jq '.[]' | jq -r '.name' | head -1} >> $GITHUB_OUTPUT
+        echo helm=${curl --silent "https://api.github.com/repos/helm/helm/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'} >> $GITHUB_OUTPUT
+        echo gitlab_tofu=${curl -s https://gitlab.com/api/v4/projects/53866919/releases/ | jq '.[]' | jq -r '.name' | head -1} >> $GITHUB_OUTPUT
 
     - name: Test Build for deploy
       if: "${{ github.event_name == 'push' && ! contains(github.ref,'tag') }}"
