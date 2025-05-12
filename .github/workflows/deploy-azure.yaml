@@ -47,7 +47,7 @@ jobs:
 
     - name: Get latest Runner Version
       id: versions
-      run: echo gitlab_tofu==`curl -s https://gitlab.com/api/v4/projects/53866919/releases/ | jq '.[]' | jq -r '.name' | head -1`        
+      run: echo gitlab_tofu==${curl -s https://gitlab.com/api/v4/projects/53866919/releases/ | jq '.[]' | jq -r '.name' | head -1} >> $GITHUB_OUTPUT
 
     - name: Test Build for deploy-azure
       if: "${{ github.event_name == 'push' && ! contains(github.ref,'tag') }}"
