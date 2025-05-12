@@ -11,6 +11,7 @@
 1. helmfile 1.0.0
 1. node 18.19.0
 1. gitlab-tofu 2.2.0
+1. azure-cli 2.72.0
 
 ## v5.1.0
 1. OpenTofu 1.9.0
