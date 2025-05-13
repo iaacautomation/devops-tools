@@ -81,6 +81,4 @@ WORKDIR /home/runner
 
 COPY --chown=runner:runner --from=build /actions-runner .
 
-RUN install -o root -g root -m 755 docker/* /usr/bin/ && rm -rf docker
-
 USER runner
