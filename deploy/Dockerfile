@@ -23,17 +23,6 @@ RUN curl -sfLo runner-container-hooks.zip https://github.com/actions/runner-cont
     && unzip ./runner-container-hooks.zip -d ./k8s \
     && rm runner-container-hooks.zip
 
-RUN export RUNNER_ARCH=${TARGETARCH} \
-    && if [ "$RUNNER_ARCH" = "amd64" ]; then export DOCKER_ARCH=x86_64 ; fi \
-    && if [ "$RUNNER_ARCH" = "arm64" ]; then export DOCKER_ARCH=aarch64 ; fi \
-    && curl -fsLo docker.tgz https://download.docker.com/linux/static/stable/${DOCKER_ARCH}/docker-${DOCKER_VERSION}.tgz \
-    && tar zxf docker.tgz \
-    && rm -rf docker.tgz \
-    && mkdir -p /usr/local/lib/docker/cli-plugins \
-    && curl -sfLo /usr/local/lib/docker/cli-plugins/docker-buildx \
-        "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}" \
-    && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
-
 WORKDIR /tools
 
 ## Download Tools
@@ -55,6 +44,7 @@ FROM mcr.microsoft.com/dotnet/runtime-deps:9.0
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
+ENV ACTIONS_RUNNER_CONTAINER_HOOKS=1
 ENV ImageOS=debian
 ARG TAG
 LABEL org.opencontainers.image.authors="Manpreet Singh Nehra"
@@ -66,7 +56,7 @@ LABEL org.opencontainers.image.base.name="mcr.microsoft.com/dotnet/runtime-deps:
 LABEL org.opencontainers.image.revision=$TAG
 
 RUN apt update -y \
-    && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common curl jq unzip git openssh-client ansible-lint ansible nodejs bash python3-yaml python3-kubernetes \
+    && apt install -y --no-install-recommends sudo curl jq unzip git openssh-client ansible-lint ansible nodejs bash python3-yaml python3-kubernetes \
     && rm -rf /var/lib/apt/lists/*
 
 RUN adduser --disabled-password --gecos "" --uid 1001 runner \
@@ -76,15 +66,20 @@ RUN adduser --disabled-password --gecos "" --uid 1001 runner \
     && echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers \
     && echo "Defaults env_keep += \"DEBIAN_FRONTEND\"" >> /etc/sudoers
 
+## Get All tools fromo build image
 COPY --from=build /tools/* /usr/local/bin/
 COPY --from=build /opt/opentofu/tofu /usr/local/bin
+
+## Install helm plugins
 ENV HELM_PLUGINS=/usr/local/share/helm/plugins
 RUN /usr/local/bin/helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && rm /root/.cache -rf
 
+## Disable hosts key check for ssh (ansible and tofu ssh git)
+RUN echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+
 WORKDIR /home/runner
 
-COPY --chown=runner:docker --from=build /actions-runner .
-COPY --from=build /usr/local/lib/docker/cli-plugins/docker-buildx /usr/local/lib/docker/cli-plugins/docker-buildx
+COPY --chown=runner:runner --from=build /actions-runner .
 
 RUN install -o root -g root -m 755 docker/* /usr/bin/ && rm -rf docker
 
