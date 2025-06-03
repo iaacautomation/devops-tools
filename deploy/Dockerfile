@@ -11,7 +11,7 @@ ARG HELM_VERSION
 ARG GITLAB_TOFU_VERSION
 
 RUN sudo apt-get -q update -y \
-    && sudo apt-get -q install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common curl jq unzip git openssh-client ansible-lint ansible nodejs bash python3-yaml python3-kubernetes \
+    && sudo apt-get -q install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common curl jq unzip git openssh-client ansible-lint ansible nodejs bash python3-yaml python3-kubernetes botocore boto3 \
     && sudo rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home/runner/tools
