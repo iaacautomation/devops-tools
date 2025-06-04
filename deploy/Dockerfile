@@ -11,7 +11,7 @@ ARG HELM_VERSION
 ARG GITLAB_TOFU_VERSION
 
 RUN sudo apt-get -q update -y \
-    && sudo apt-get -q install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common curl jq unzip git openssh-client ansible-lint ansible nodejs bash python3-yaml python3-kubernetes python3-botocore python3-boto3 \
+    && sudo apt-get -q install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common curl jq unzip git openssh-client ansible-lint ansible nodejs bash python3-yaml python3-kubernetes python3-botocore python3-boto3 idn2 \
     && sudo rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home/runner/tools
@@ -34,9 +34,10 @@ RUN curl -sfL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "aws
 
 RUN ls -l && sudo cp * /usr/local/bin/
 
-ENV HELM_PLUGINS=/usr/local/share/helm/plugins
-RUN sudo /usr/local/bin/helm plugin install https://github.com/databus23/helm-diff && sudo helmfile init --force && sudo rm /root/.cache -rf
+USER runner
+WORKDIR /home/runner
+
+RUN /usr/local/bin/helm plugin install https://github.com/databus23/helm-diff && helmfile init --force && sudo rm .cache -rf
 
 RUN echo "    StrictHostKeyChecking no" | sudo tee -a /etc/ssh/ssh_config
 
-USER runner
