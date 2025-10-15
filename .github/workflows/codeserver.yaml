@@ -42,4 +42,3 @@ jobs:
         push: true
         tags: ghcr.io/iaacautomation/codeserver:latest
         platforms: linux/amd64
-        build-args: CHANNEL=nightly

@@ -4,7 +4,8 @@ on:
     paths:
       - 'deploy/**'
       - '.github/workflows/deploy.yaml'
-
+  schedule:
+      - cron: '0 0 * * 0'
 jobs: 
   release:
     name: Build and Release Deploy Image
